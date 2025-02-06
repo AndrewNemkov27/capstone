@@ -19,17 +19,23 @@ The sharing of literature has contributed significantly to cultural intertwining
 
 # Dataset
 
-[In this section, desribe the dataset(s). This includes things like where you
-obtained the dataset. Include a full citation, as specified 
-[here](https://guides.lib.umich.edu/c.php?g=282964&p=3285995). Describe how the
-data was obtained by the data owner/curator, as best as you can. List the 
-variables that you plan to use in your analysis, for example:
+The dataset used in this project is a collection of image panels from three series of the manga Grappler Baki, specifically from "Hanma Baki", "Baki Dou 2", and "Baki Rahen". These images were obtained from the dl raw site in the JPG format and amount to a total of around 4000 images spread between the three series. The quality and size of each image varies, but most are around 3500 pixels wide and 2160 pixels in height with resolution of around 144 ppi. 
 
-* weight: The patient's weight (kg)
-* sex: The patient's sex, male or female
-* age: The patient's age (months)
+After applying OCR to the manga images, the following variables are planned to be used in the linguistic analysis:
 
-]
+* word_JAP: Japanese word of manga image
+* word_US: English word of manga image
+* word_POS: grammatical classification of Japanese word
+* img_title: manga image's file title
+* img_series: manga image's specific Baki series
+* length: length in characters of extracted word
+* confidence: OCR confidence score for extracted Japanese word (percent)
+* word_freq: frequency of Japanese word from all images
+* hiragana_ratio: portion of hiragana in phrase with Japanese word (percent)
+* katakana_ratio: portion of katakana in phrase with Japanese word (percent)
+* kanji_ratio: portion of kanji in phrase with Japanese word (percent)
+
+Itagaki, Keisuke. Hanma Baki, Baki-Dou 2, and Baki Rahen. Shōnen Champion, 2024. https://dl-raw.ac/.
 
 # Data Acquisition and Processing
 
