@@ -1,8 +1,8 @@
 ---
-title: "Proposal: [Your project name]"
+title: "Proposal: Grappler Baki Word Analysis"
 subtitle: "DATA 450 Capstone"
-author: "[Your Name]"
-date: today
+author: "Andrew Nemkov"
+date: 2025/02/06
 date-format: long
 bibliography: references.bib
 number-sections: true
@@ -13,7 +13,9 @@ jupyter: python3
 
 # Introduction
 
-[This section should contain background and introduction to your general topic.]
+Language is often considered a significant barrier in the study and understanding of global cultures. Two people from different countries often struggle to bond due to a lack of communication. This barrier is especially difficult to breach when comparing the English and Japanese languages. Both the United States and Japan are economic and democratic leaders globally, yet the major linguistic differences between the two types of speech divide both regions more than the vast Pacific Ocean. 
+
+The sharing of literature has contributed significantly to cultural intertwining. In particular, Japanese manga has helped to connect both global cultures as a mirror of artistic and compositional expression. This project seeks to analyze the language use in manga by extracting Japanese words with Optical Character Recognition (OCR) software and performing linguistic analysis. In more detail, the analysis will delve in word frequency and type of character usage in the work as well as assess OCR performance for future improvements and project development. As a result, the process aims to provide insights into how language is used in manga for story progression and character development.
 
 # Dataset
 
