@@ -19,7 +19,7 @@ The sharing of literature has contributed significantly to cultural intertwining
 
 # Dataset
 
-The dataset used in this project is a collection of image panels from three series of the manga Grappler Baki, specifically from "Hanma Baki", "Baki Dou 2", and "Baki Rahen". These images were obtained from the dl raw site in the JPG format and amount to a total of around 4000 images spread between the three series. The quality and size of each image varies, but most are around 3500 pixels wide and 2160 pixels in height with resolution of around 144 ppi. 
+The dataset used in this project is a collection of image panels from three series of the manga Grappler Baki, specifically from "Hanma Baki", "Baki Dou 2", and "Baki Rahen". These images were obtained from the DL-Raw.ac site in the JPG format and amount to a total of around 4000 images spread between the three series. The quality and size of each image varies, but most are around 3500 pixels wide and 2160 pixels in height with resolution of around 144 ppi. 
 
 After applying OCR to the manga images, the following variables are planned to be used in the linguistic analysis:
 
@@ -39,11 +39,11 @@ Itagaki, Keisuke. Hanma Baki, Baki-Dou 2, and Baki Rahen. Shōnen Champion, 2024
 
 # Data Acquisition and Processing
 
-[In this section, if applicable, describe how you will obtain the data (if it's
-anything more complicated than a simple download). Discuss what data 
-processing steps will be needed, such as recoding variables, data cleaning,
-data tidying, imputing missing values, etc. See sections 1c, 1d, 1e in the 
-"Good Enough Practices" paper.]
+The JPG images for this project was downloaded through a publicly accessible website DL-Raw.ac, which provided these pages for free usage. The pages used in this analysis will be used for non-commercial purposes only, all source citation will be provided, and the data will not be redistributed.
+
+The JPG images will need to be run through a mostly accurate OCR python program to record significant information from the pages. After this process, all extracted data will be put into a text or CSV format file and the words in each phrase will be extracted and become the data's rows. All the variables listed above will become the data's columns and will be obtained through various coding tasks such as translation, image detail scrapping, calculation of frequency amounts, and others.
+
+The data will also need to be cleaned accordingly, by removing non-Japanese text from OCR recognition, as well as polishing each word through the use of a Japanese text dictionary. This will make sure that all recorded words are grammatically correct before analysis.
 
 # Research Questions and Methodology
 
@@ -53,18 +53,20 @@ question. Include the specific steps you will take, what form the answer will
 take (a number? table? visualization? model? Give all the specifics), and 
 estimate how many hours each question will take to complete.]
 
-1. Is smoking correlated with diabetes? To answer this, I will create a filled
-bar plot, with the left bar representing non-smokers, the middle bar
-representing people who smoke moderately, and the right bar representing heavy
-smokers. The bars will be the same height, and each bar will be
-colored two colors based on the proportion of patients in the group who do or
-do not have diabetes.
+1. What are the most common and least common Japanese words across different manga series in the Baki franchise?
 
-2. Question 2? Plan for question 2.
+- The variables used for this question will be word_JAP, img_series, and word_freq.
+- This question can be answered by first plotting the top 10 most common and top 10 least common Japanese words into a bar graph with the y-axis representing the count of this word across all three series. The answer of most and least common words would be in textual format. These two bar graphs can later be broken down into three separate bar graphs for each series individually. These six values would also be in textual format. Both groups of visualizations would most likely take around an hour to complete, but this could take longer due to visualization styling.
 
-3. Question 3? Plan for question 3.
+2. How is the usage of different parts of speech distributed across the three manga series?
 
-4. etc.
+- The variables used for this question will be word_JAP, word_POS, and img_series.
+- This question can be answered by firstly organizing the data into three separate datasets by series. After this, the number of each part of speech would be counted and recorded in textual format using a side by side bar graph visualization of nouns, verbs, and adjectives of each series. This would take around a little more than an hour for creating and styling of the visualization.
+
+3. How does the OCR confidence score correlate with the complexity of the word based on length of phrase and character type of specific word?
+
+- The variables used for this question will be word_JAP, confidence, length, hiragana_ratio, katakana_ratio, and kanji_ratio.
+- This question can be answered by firstly identifying what would represent complexity in a word or phrase. This would be using the length and type of character of the word used. To understand the relationship between OCR confidence and complexity, a correlation would be created to understand the relationship between the two variables. Further, a heatmap can be created to visualize this. This question would be answered in around two hours.
 
 # Work plan
 
