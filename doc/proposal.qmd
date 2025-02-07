@@ -56,63 +56,76 @@ estimate how many hours each question will take to complete.]
 1. What are the most common and least common Japanese words across different manga series in the Baki franchise?
 
 - The variables used for this question will be word_JAP, img_series, and word_freq.
-- This question can be answered by first plotting the top 10 most common and top 10 least common Japanese words into a bar graph with the y-axis representing the count of this word across all three series. The answer of most and least common words would be in textual format. These two bar graphs can later be broken down into three separate bar graphs for each series individually. These six values would also be in textual format. Both groups of visualizations would most likely take around an hour to complete, but this could take longer due to visualization styling.
+- This question can be answered by first plotting the top 10 most common and top 10 least common Japanese words into a bar graph with the y-axis representing the count of this word across all three series. The answer of most and least common words would be in textual format. These two bar graphs can later be broken down into three separate bar graphs for each series individually. These six values would also be in textual format. Both groups of visualizations would most likely take around four hours to complete, but this could take longer due to visualization styling.
 
 2. How is the usage of different parts of speech distributed across the three manga series?
 
 - The variables used for this question will be word_JAP, word_POS, and img_series.
-- This question can be answered by firstly organizing the data into three separate datasets by series. After this, the number of each part of speech would be counted and recorded in textual format using a side by side bar graph visualization of nouns, verbs, and adjectives of each series. This would take around a little more than an hour for creating and styling of the visualization.
+- This question can be answered by firstly organizing the data into three separate datasets by series. After this, the number of each part of speech would be counted and recorded in textual format using a side by side bar graph visualization of nouns, verbs, and adjectives of each series. This would take around a little more than four hour for creating and styling of the visualization.
 
 3. How does the OCR confidence score correlate with the complexity of the word based on length of phrase and character type of specific word?
 
 - The variables used for this question will be word_JAP, confidence, length, hiragana_ratio, katakana_ratio, and kanji_ratio.
-- This question can be answered by firstly identifying what would represent complexity in a word or phrase. This would be using the length and type of character of the word used. To understand the relationship between OCR confidence and complexity, a correlation would be created to understand the relationship between the two variables. Further, a heatmap can be created to visualize this. This question would be answered in around two hours.
+- This question can be answered by firstly identifying what would represent complexity in a word or phrase. This would be using the length and type of character of the word used. To understand the relationship between OCR confidence and complexity, a correlation would be created to understand the relationship between the two variables. Further, a heatmap can be created to visualize this. This question would be answered in around five hours.
 
 # Work plan
 
-[Fill in the list below with a plan for what you will do each week, starting 2/10. You should
-have around 7 hours worth of work each week. Writing work counts. Several tasks
-have already been filled in for you.]
+**Week 4 (2/10 - 2/16):**  
 
-**Week 4 (2/10 - 2/16):** [Just an example: 
-
-* Data tidying and recoding (4 hours)
-* Question 2 (4 hours).]
+* experiment further on OCR (3 hous)
+* add more data to work with to make the analysis fairer (4 hours)
 
 **Week 5 (2/17 - 2/23):**
 
+* take time to improve OCR model to detect more image text (3 hours)
+* set up dataset and perform basic testing and overview (4 hours)
+
 **Week 6 (2/24 - 3/2):**
+
+* clean data and implement Japanese dictionary connection (2 hours)
+* begin work on question 1 and create visualization (4 hours)
+* spend a bit more time learning about how works OCR (1 hour)
 
 **Week 7 (3/3 - 3/9):**
 
+* Refine results of question 1 and begin work on question 2 (3 hours)
 * Presentation prep and practice (4 hours)
 
 **Week 8 (3/10 - 3/16):** *Presentations given on Wed-Thu 3/12-3/13.*
 
 * Poster prep (4 hours)
 * Presentation peer review (1.5 hours)
+* continue work on question 2
 
 **Week 9 (3/24 - 3/30):** *Poster Draft 1 due Monday morning 3/24 at 9am. Poster Draft 2 due Sunday night 3/30.*
 
 * Peer feedback (2 hours)
-
 * Poster revisions (1.5 hours)
+* finish and refine question 2 (4 hours)
 
 **Week 10 (3/31 - 4/6):** *Final Poster due Sunday 4/6.*
 
 * Peer feedback (1.5 hours)
-
 * Poster revisions (2 hours)
+* begin work on question 3 (4 hours)
 
 **Week 11 (4/7 - 4/13):**
 
+* finish question 3 (2 hours)
+* do double-check of previous work and make needed improvements (5 hours)
+
 **Week 12 (4/14 - 4/20):**
+
+* consider question and results of analysis (3 hours)
+* consider need for project expansion (1 hour)
+* look over basic info on how to present results (3 hours)
 
 **Week 13 (4/21 - 4/27):** *Blog post draft 1 due Sunday night 4/28.*
 [All project work should be done by the end of this 
 week. The remaining time will be used for writing up and presenting your results.]
 
 * Draft blog post (4 hours).
+* find images and style on how to put together blog post (3 hours)
 
 **Week 14 (4/28 - 5/4):**
 
