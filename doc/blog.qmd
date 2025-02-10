@@ -1,7 +1,7 @@
 ---
-title: "My awesome blog"
-subtitle: "Spring 2023"
-author: "Prof. Yuster"
+title: "Grappler Baki Word Analysis"
+subtitle: "Spring 2025"
+author: "Andrew Nemkov"
 bibliography: references.bib
 nocite: |
   @*
