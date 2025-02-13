@@ -2,7 +2,7 @@
 title: "Proposal: Grappler Baki Word Analysis"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 2025/02/06
+date: 2025/02/13
 date-format: long
 bibliography: references.bib
 number-sections: true
@@ -21,8 +21,9 @@ The sharing of literature has contributed significantly to cultural intertwining
 
 The dataset used in this project is a collection of image panels from three series of the manga Grappler Baki, specifically from "Hanma Baki", "Baki Dou 2", and "Baki Rahen". These images were obtained from the DL-Raw.ac site in the JPG format and amount to a total of around 4000 images spread between the three series. The quality and size of each image varies, but most are around 3500 pixels wide and 2160 pixels in height with resolution of around 144 ppi. 
 
-After applying OCR to the manga images, the following variables are planned to be used in the linguistic analysis:
+A key aspect of this project involves analysis of Japanese words or phrase and for this reason additional background information is required for the reader. The Japanese writing system consists of logographic kanji symbols and a pair of kana. These kana consits of hiragana, used for native Japanese words and grammer, and katakana, which is used primarity for foreign words and names. Both hiragana and katakana each contain 46 basic characters while kanji consists of over 50,000 characters. Considering this, Japanese school students are required to learn the 2,136 most common of these kanji characters after finishing college. 
 
+From this background informtion, a total of 11 varibles will be used for data ananlysis regarding. These variables vary from information on words extracted with the OCR process, image information, OCR characteristics, Japanese character information, and others. Further details are shown below:
 * word_JAP: Japanese word of manga image
 * word_US: English word of manga image
 * word_POS: grammatical classification of Japanese word
@@ -31,9 +32,9 @@ After applying OCR to the manga images, the following variables are planned to b
 * length: length in characters of extracted word
 * confidence: OCR confidence score for extracted Japanese word (percent)
 * word_freq: frequency of Japanese word from all images
-* hiragana_ratio: portion of hiragana in phrase with Japanese word (percent)
-* katakana_ratio: portion of katakana in phrase with Japanese word (percent)
-* kanji_ratio: portion of kanji in phrase with Japanese word (percent)
+* hiragana_ratio: the portion of hiragana characters in the phrase which includes specific Japanese word (as percent)
+* katakana_ratio: the portion of katakana characters in the phrase which includes specific Japanese word (as percent)
+* kanji_ratio: the portion of kanji characters in the phrase which includes specific Japanese word (as percent)
 
 Itagaki, Keisuke. Hanma Baki, Baki-Dou 2, and Baki Rahen. Shōnen Champion, 2024. https://dl-raw.ac/.
 
@@ -41,7 +42,9 @@ Itagaki, Keisuke. Hanma Baki, Baki-Dou 2, and Baki Rahen. Shōnen Champion, 2024
 
 The JPG images for this project was downloaded through a publicly accessible website DL-Raw.ac, which provided these pages for free usage. The pages used in this analysis will be used for non-commercial purposes only, all source citation will be provided, and the data will not be redistributed.
 
-The JPG images will need to be run through a mostly accurate OCR python program to record significant information from the pages. After this process, all extracted data will be put into a text or CSV format file and the words in each phrase will be extracted and become the data's rows. All the variables listed above will become the data's columns and will be obtained through various coding tasks such as translation, image detail scrapping, calculation of frequency amounts, and others.
+The JPG images will be run through a python OCR program, which would take each image and collect the words and phrases from the images into textual format. Specifically, this process will involve using PaddleOCR, a popular python OCR library, as well as fugashi, a library developed for the purpose of cleaning Japanese text. To increase accuracy and word recognition from each image, the Paddle OCR parameters will be adjusted accordingly to detect smaller text, improve the model's ability to detect text regions, increase batch size for more character recognition, as well as other parameter changes.
+
+After an image's phrases are properly extracted with the methods above, this text will be tokenized and separated into words using the Fugashi library.
 
 The data will also need to be cleaned accordingly, by removing non-Japanese text from OCR recognition, as well as polishing each word through the use of a Japanese text dictionary. This will make sure that all recorded words are grammatically correct before analysis.
 
