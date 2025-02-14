@@ -98,47 +98,48 @@ This question can be effectively answered with a detailed stacked bar chart.
 
 **Week 4 (2/10 - 2/16):**  
 
+* fix up proposal and research more on project idea (4 hours)
 * experiment further on OCR (3 hous)
-* add more data to work with to make the analysis fairer (4 hours)
 
 **Week 5 (2/17 - 2/23):**
 
 * take time to improve OCR model to detect more image text (3 hours)
-* set up dataset and perform basic testing and overview (4 hours)
+* start data preparation and acquisition - basic read into CSV from all images (4 hours)
 
 **Week 6 (2/24 - 3/2):**
 
-* clean data and implement Japanese dictionary connection (2 hours)
-* begin work on question 1 and create visualization (4 hours)
-* spend a bit more time learning about how works OCR (1 hour)
+* finish data acquisition - calculate  and extract 11 variables for each word (5 hours)
+* clean data and deal Null values (2 hours)
 
 **Week 7 (3/3 - 3/9):**
 
-* Refine results of question 1 and begin work on question 2 (3 hours)
-* Presentation prep and practice (4 hours)
+* begin question 1 - complete scatter and box plots (2 hours)
+* write notes on results of this analysis (2 hours)
+* create question 1 heat map and write up results and interesting points (3 hours)
 
 **Week 8 (3/10 - 3/16):** *Presentations given on Wed-Thu 3/12-3/13.*
 
 * Poster prep (4 hours)
 * Presentation peer review (1.5 hours)
-* continue work on question 2
+* start work on question 2 - bar and stacked bar graphs (2 hours)
 
 **Week 9 (3/24 - 3/30):** *Poster Draft 1 due Monday morning 3/24 at 9am. Poster Draft 2 due Sunday night 3/30.*
 
 * Peer feedback (2 hours)
 * Poster revisions (1.5 hours)
-* finish and refine question 2 (4 hours)
+* finish question 2 bar graphs, write notes on them, and start TF-IDF section (4 hours)
 
 **Week 10 (3/31 - 4/6):** *Final Poster due Sunday 4/6.*
 
 * Peer feedback (1.5 hours)
 * Poster revisions (2 hours)
-* begin work on question 3 (4 hours)
+* finish question 2 TF-IDF and add notes (4 hours)
 
 **Week 11 (4/7 - 4/13):**
 
-* finish question 3 (2 hours)
-* do double-check of previous work and make needed improvements (5 hours)
+* start question 3 graph (2 hours)
+* complete question 3 and write down notes on results (3 hours)
+* consider expansion of project and possible improvements (2 hours)
 
 **Week 12 (4/14 - 4/20):**
 
@@ -196,6 +197,3 @@ Here's an example of citing a source [see @phil99, pp. 33-35]. Be sure the sourc
 
 # References
 
-[The bibliography will automatically get generated. Any sources you
-cite in the document will be included. Other entries in the `.bib` file
-will not be included.]
