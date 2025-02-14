@@ -197,3 +197,6 @@ Here's an example of citing a source [see @phil99, pp. 33-35]. Be sure the sourc
 
 # References
 
+Coto Academy. 2024. “Japanese Writing System: Kanji, Hiragana, and Katakana Explained.” Coto Academy. https://cotoacademy.com/japanese-writing-system-kanji-hiragana-and-katakana-explained/.
+
+TecMint. 2023. “How to Extract and Recognize Text from Images Using Python.” TecMint. https://www.tecmint.com/python-text-extraction-from-images/.
