@@ -41,7 +41,7 @@ Itagaki, Keisuke. Hanma Baki, Baki-Dou 2, and Baki Rahen. Shōnen Champion, 2024
 
 # Data Acquisition and Processing
 
-The JPG images for this project was downloaded through a publicly accessible website DL-Raw.ac, which provided these pages for free usage. The pages used in this analysis will be used for non-commercial purposes only, all source citation will be provided, and the data will not be redistributed.
+The JPG images for this project was downloaded through a publicly accessible website dl-raw.ac, which provided these pages for free usage. The pages used in this analysis will be used for non-commercial purposes only, all source citation will be provided, and the data will not be redistributed.
 
 The JPG images will be run through a python OCR program, which would take each image and collect the words and phrases from the images into textual format. Specifically, this process will involve using PaddleOCR, a popular python OCR library, as well as Fugashi, a python library developed for the purpose of performing tasks on Japanese text such as cleaning. To increase accuracy and word recognition from each image, the Paddle OCR parameters will be adjusted accordingly to detect smaller text, improve the model's ability to detect text regions, increase batch size for more character recognition, and others.
 
@@ -57,20 +57,42 @@ These steps, as well as further collection of other data, will be gathered and t
 
 # Research Questions and Methodology
 
-1. What are the most common and least common Japanese words across different manga series in the Baki franchise?
+Before research questions could be effectively answered, proper data cleaning will be performed to simplify the process of dataset analysis. For example, visualizations of total words per series and the total POS per series will help in understanding the structure of the dataset. In addition, the amount of NaN or Null values will be gathered and this number will reflect how to deal with the data's missing information.
 
-- The variables used for this question will be word_JAP, img_series, and word_freq.
-- This question can be answered by first plotting the top 10 most common and top 10 least common Japanese words into a bar graph with the y-axis representing the count of this word across all three series. The answer of most and least common words would be in textual format. These two bar graphs can later be broken down into three separate bar graphs for each series individually. These six values would also be in textual format. Both groups of visualizations would most likely take around four hours to complete, but this could take longer due to visualization styling.
+1. How does the OCR confidence score relate to word complexity, and what does this reveal about limitations in manga text extraction?
 
-2. How is the usage of different parts of speech distributed across the three manga series?
+The variables used for this question will be **confidence**, **length**, **hiragana_ratio**, **katakana_ratio**, and **kanji_ratio**.
 
-- The variables used for this question will be word_JAP, word_POS, and img_series.
-- This question can be answered by firstly organizing the data into three separate datasets by series. After this, the number of each part of speech would be counted and recorded in textual format using a side by side bar graph visualization of nouns, verbs, and adjectives of each series. This would take around a little more than four hour for creating and styling of the visualization.
+The term word complexity will be defined by the length of the word and the specific character composition of the word. In general terms, a longer word based on character length is more complex and a word that includes more kanji characters compared to kana characters in the whole word is also considered complex.
 
-3. How does the OCR confidence score correlate with the complexity of the word based on length of phrase and character type of specific word?
+To understand the relationship between OCR confidence and word complexity, the correlations between OCR confidence, word length, and character type distribution will be measured. The most effective visualization for this analysis will be the scatter plot, box plot, and heat map.
 
-- The variables used for this question will be word_JAP, confidence, length, hiragana_ratio, katakana_ratio, and kanji_ratio.
-- This question can be answered by firstly identifying what would represent complexity in a word or phrase. This would be using the length and type of character of the word used. To understand the relationship between OCR confidence and complexity, a correlation would be created to understand the relationship between the two variables. Further, a heatmap can be created to visualize this. This question would be answered in around five hours.
+* The scatter plot will visualize the relationship between OCR confidence and word length to see if longer words have a lower OCR confidence. If the result is a downward trend then the OCR model performs worse on longer character words. 
+* The box plot will visualize the correlation between Japanese character category and OCR confidence score to compare how confidence connects with different types of Japanese words. From the graph, if the kanji heavy words have significantly lower OCR confience compared to hiragana or katakana heavy words, then it will show that OCR struggles with logographic Japanese characters. 
+* The heatmap will show the correlations between the variables of confidence, word length, and the three Japanese character types through a color-based grip pattern. This will help to identify the factors that most impact OCR confidence. If confidence has a negative correlation with word length, then longer words reduce OCR accuracy. Also, if confidence has a negative correlation with a word's kanji ratio, the OCR also struggles with kanji heavy words.
+
+2. How do word frequency and speech patterns vary across different Baki series, and what does this reveal about narrative themes?
+
+The variables used for this question will be **word_JAP**, **word_POS**, **word_freq**, and **img_series**.
+
+This analysis will delve into the three Baki series used in the image data. Understanding word frequency between series and types of words between series will provide insights into how words can be used to contribute to story telling, and how specific types of words bend or turn a story into a specific direction. 
+
+The most effective types of visualizations for this analysis will be normal and stacked bar charts for analysis between series, as well as a TF-IDF analysis.
+
+* The word frequency distribution will be shown by a ordinary bar chart, visualizing the most and least common words across all three Baki series, to allow for direct comparision of language patterns between the three. If the graph shows that certain words are used significantly more often in one series compared to the others, then this will indicate that the focus of the author has shifted on this series compared to the others.
+* The stacked bar graph will be used to understand the parts of speech distributio0n, to compare the proportion of nouns, verbs, adjectives, and other types in each series. If the graph shows that one series includes significantly more verbs than the others then it will indicate that this series contains more action schenes and is less philosophical compared to the other series.
+* The analysis using the term frequency and inverse document frequency will provide insights into word that are unique to each series, as well as filtering common words. This will help to highlight the key themes of each series, revealing the change or shift in theme from one series to another.
+
+3. How does the language in Baki reflect key themes of strength, violence, and philosophy across different series?
+
+The variables used for this question will be **word_JAP**, **word_US**, **word_freq**, **word_POS**, and **img_series**.
+
+The study  of key themes across the various of Baki series will follow a similar, yet also different analysis path compared to question 2. It will focus on identifying thematic language patterns in Grappler Baki by examining the frequency of words that relate to ideas of strength, violence, and philosophy in the series. This approach will help to understand the unique storytelling of Baki, and what sets it apart from other Japanese manga of similar style.
+
+This question can be effectively answered with a detailed stacked bar chart.
+
+* This visualization will exxplore the thematic word frequency across series, with the x-axis showing the three Baki manga series and the y-axis showing the total frequency of theme-related words. The bars of the graph will be divided into three segments: strength-related words, violence-related words, and philosophy-related words. Each theme segment will be color-coded with each segment providing percentge of total as additional information. This more broad analysis will allow for a visualization of how Baki's sotorytelling has evolved how how language in this manga has shifted over time. Specifically, it will offer insights into the linguistic structure and character development in the franchise.
+
 
 # Work plan
 
@@ -144,8 +166,6 @@ week. The remaining time will be used for writing up and presenting your results
 * [Do not schedule any other tasks for this week.]
 
 ## Some cool Quarto stuff
-
-[You can delete this section from your proposal.]
 
 For your reference, here's an example of a Python code cell in Quarto,
 along with a figure that gets generated, along with a caption and a label
