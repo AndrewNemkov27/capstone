@@ -5,19 +5,36 @@ from paddleocr import PaddleOCR
 import fugashi
 import os
 
-
-# function to clean up OCR text using fugashi tokenizer
-def clean_japanese_text(text):
-    tagger = fugashi.Tagger()
-    return "".join([word.surface for word in tagger(text)])
+# initialize the fugashi tokenizer
+tagger = fugashi.Tagger()
 
 
-# function to filter out non-Japanese characters (kanji, hiragana, katakana)
+# function to clean non-Japanese characters
 def clean_non_japanese(text):
     return re.sub(r'[^ぁ-んァ-ン一-龯々〆〤]+', '', text)
 
 
-# initialize PaddleOCR with optimized parameters
+# function to tokenize Japanese text into dictionary-based words
+def tokenize_japanese(text):
+    words = []
+    for word in tagger(text):
+        pos = word.feature.pos1  # get part-of-speech (POS) tag
+        surface = word.surface
+
+        # ignore grammatical particles (助詞)
+        if pos == "助詞":
+            continue
+
+        # ignore single character words if they are only hiragana or katakana alphabet letters
+        if len(surface) == 1 and re.match(r'^[ぁ-んァ-ン]$', surface):
+            continue
+
+        words.append(surface)
+
+    return words
+
+
+# initialize OCR parameters
 ocr = PaddleOCR(
     lang="japan",
     rec_algorithm="SVTR_LCNet",
@@ -43,7 +60,7 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
 
     # write header only if file is empty
     if file.tell() == 0:
-        writer.writerow(["Extracted Text", "Image Name", "Confidence"])
+        writer.writerow(["word_JAP", "phrase_JAP", "img_title", "confidence"])
 
     # process all JPG images in the folder
     for filename in os.listdir(image_folder):
@@ -68,16 +85,18 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
                 for result in results[0]:
                     if isinstance(result, list) and len(result) > 1:
                         _, (text, confidence) = result
-                        cleaned_text = clean_japanese_text(text)
-                        cleaned_text = clean_non_japanese(cleaned_text)
+                        cleaned_text = clean_non_japanese(text)
 
                         if len(cleaned_text) >= 2:
-                            # write results to CSV
-                            writer.writerow([cleaned_text, filename, f"{confidence:.2f}"])
-                            data_written = True
+                            # tokenize into dictionary words, filtering out particles and single character kana
+                            words = tokenize_japanese(cleaned_text)
 
-            # print success message 
+                            # write each word individually into CSV
+                            for word in words:
+                                writer.writerow([word, cleaned_text, filename, f"{confidence:.2f}"])
+                                data_written = True
+
             if data_written:
                 print()
-                print(f"{filename} successfully read into CSV")
+                print(f"{filename} successfully processed with word segmentation.")
                 print()
