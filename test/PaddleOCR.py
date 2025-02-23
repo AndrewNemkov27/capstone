@@ -1,12 +1,30 @@
 import cv2
 import re
 import csv
-from paddleocr import PaddleOCR
-import fugashi
 import os
+import fugashi
+from collections import Counter
+from paddleocr import PaddleOCR
+from googletrans import Translator
 
-# initialize the fugashi tokenizer
+# Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
+
+# POS tag mapping (Japanese to English)
+pos_mapping = {
+    "名詞": "noun",
+    "動詞": "verb",
+    "形容詞": "adjective",
+    "副詞": "adverb",
+    "助詞": "particle",
+    "助動詞": "auxiliary verb",
+    "連体詞": "adnominal",
+    "接続詞": "conjunction",
+    "感動詞": "interjection",
+    "接頭詞": "prefix",
+    "接尾詞": "suffix",
+    "その他": "other"
+}
 
 
 # function to clean non-Japanese characters
@@ -14,27 +32,66 @@ def clean_non_japanese(text):
     return re.sub(r'[^ぁ-んァ-ン一-龯々〆〤]+', '', text)
 
 
-# function to tokenize Japanese text into dictionary-based words
+# initialize Google Translator
+translator = Translator()
+translation_cache = {}
+
+
+# function to translate Japanese to English
+def get_english_translation(word):
+    if word in translation_cache:
+        return translation_cache[word]
+
+    try:
+        translated = translator.translate(word, src="ja", dest="en")
+        translation_cache[word] = translated.text
+        return translated.text
+    except Exception as e:
+        print(f"Error translating {word}: {e}")
+        return "N/A"
+
+
+# function to tokenize Japanese text into words with POS tagging
 def tokenize_japanese(text):
-    words = []
+    words_with_pos = []
     for word in tagger(text):
-        pos = word.feature.pos1  # get part-of-speech (POS) tag
+        pos = word.feature.pos1
         surface = word.surface
 
         # ignore grammatical particles (助詞)
         if pos == "助詞":
             continue
 
-        # ignore single character words if they are only hiragana or katakana alphabet letters
+        # ignore single-character hiragana or katakana words
         if len(surface) == 1 and re.match(r'^[ぁ-んァ-ン]$', surface):
             continue
 
-        words.append(surface)
+        pos_english = pos_mapping.get(pos, "unknown")
+        words_with_pos.append((surface, pos_english))
 
-    return words
+    return words_with_pos
 
 
-# initialize OCR parameters
+# define character sets for categorization
+HIRAGANA = set("ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ")
+KATAKANA = set("ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶ")
+KANJI_RANGE = (ord("一"), ord("龯"))  # unicode range for Kanji characters
+
+
+# function to compute character ratios
+def compute_character_ratios(word):
+    total_chars = len(word)
+    if total_chars == 0:
+        return 0.0, 0.0, 0.0
+
+    hiragana_count = sum(1 for char in word if char in HIRAGANA)
+    katakana_count = sum(1 for char in word if char in KATAKANA)
+    kanji_count = sum(1 for char in word if KANJI_RANGE[0] <= ord(char) <= KANJI_RANGE[1])
+
+    return round(hiragana_count / total_chars, 4), round(katakana_count / total_chars, 4), round(kanji_count / total_chars, 4)
+
+
+# initialize PaddleOCR
 ocr = PaddleOCR(
     lang="japan",
     rec_algorithm="SVTR_LCNet",
@@ -49,38 +106,73 @@ ocr = PaddleOCR(
     use_dilation=True
 )
 
-# construct correct folder and CSV paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
 image_folder = os.path.join(script_dir, "test_jpg")
 csv_file = os.path.join(script_dir, "test_data.csv")
 
-# open CSV file and prepare for writing
+# extract parent folder name for img_series
+img_series = os.path.basename(image_folder)
+
+# word frequency counter
+word_counts = Counter()
+total_words = 0
+
+# Step 1: count word occurrences
+for filename in os.listdir(image_folder):
+    if filename.lower().endswith(".jpg"):
+        image_path = os.path.join(image_folder, filename)
+        img = cv2.imread(image_path)
+
+        if img is None:
+            print(f"Skipping {filename}: Unable to read image.")
+            continue
+
+        # convert to grayscale and apply denoising
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_denoised = cv2.fastNlMeansDenoising(img_gray, None, 30, 7, 21)
+
+        # run OCR
+        results = ocr.ocr(img_denoised, cls=True)
+
+        if results and results[0]:
+            for result in results[0]:
+                if isinstance(result, list) and len(result) > 1:
+                    _, (text, _) = result
+                    cleaned_text = clean_non_japanese(text)
+
+                    if len(cleaned_text) >= 2:
+                        words_with_pos = tokenize_japanese(cleaned_text)
+
+                        # count each word
+                        for word, _ in words_with_pos:
+                            word_counts[word] += 1
+                            total_words += 1
+
+# Step 2: write to CSV with frequency and ratios
 with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
     writer = csv.writer(file)
 
     # write header only if file is empty
     if file.tell() == 0:
-        writer.writerow(["word_JAP", "phrase_JAP", "img_title", "confidence"])
+        writer.writerow(["word_JAP", "word_US", "word_POS", "phrase_JAP", "img_title", "img_series", "length", "confidence", "word_freq", "hiragana_ratio", "katakana_ratio", "kanji_ratio"])
 
-    # process all JPG images in the folder
+    # process images again to write the data
     for filename in os.listdir(image_folder):
         if filename.lower().endswith(".jpg"):
             image_path = os.path.join(image_folder, filename)
             img = cv2.imread(image_path)
 
             if img is None:
-                print(f"Skipping {filename}: Unable to read image.")
                 continue
 
-            # convert to grayscale and apply denoising
+            # convert to grayscale and denoise
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             img_denoised = cv2.fastNlMeansDenoising(img_gray, None, 30, 7, 21)
 
-            # run OCR on the processed image
+            # OCR
             results = ocr.ocr(img_denoised, cls=True)
-            data_written = False  # Track if any text was written
+            data_written = False  # track if data was written
 
-            # extract and clean text results
             if results and results[0]:
                 for result in results[0]:
                     if isinstance(result, list) and len(result) > 1:
@@ -88,15 +180,18 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
                         cleaned_text = clean_non_japanese(text)
 
                         if len(cleaned_text) >= 2:
-                            # tokenize into dictionary words, filtering out particles and single character kana
-                            words = tokenize_japanese(cleaned_text)
+                            words_with_pos = tokenize_japanese(cleaned_text)
+                            translations = {word: get_english_translation(word) for word, _ in words_with_pos}
 
-                            # write each word individually into CSV
-                            for word in words:
-                                writer.writerow([word, cleaned_text, filename, f"{confidence:.2f}"])
+                            for word, pos in words_with_pos:
+                                translation = translations.get(word, "N/A")
+                                word_length = len(word)
+                                word_frequency = round(word_counts[word] / total_words, 4)
+                                hiragana_ratio, katakana_ratio, kanji_ratio = compute_character_ratios(word)
+
+                                writer.writerow([word, translation, pos, cleaned_text, filename, img_series, word_length, f"{confidence:.2f}", word_frequency, hiragana_ratio, katakana_ratio, kanji_ratio])
                                 data_written = True
 
+            # output success message
             if data_written:
-                print()
-                print(f"{filename} successfully processed with word segmentation.")
-                print()
+                print(f"{filename} was successfully processed.")
