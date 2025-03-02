@@ -16,29 +16,31 @@ format:
 | Mon.  |  |  |  |  |
 | Tue.  |  |  |  |  |
 | Wed.  |  |  |  |  |
-| Thu.  | [4-7:30pm] | [3.5] | [revise proposal and add new questions] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/1534299aa6d78ac3d098f9a877e343f4b47aacdd) |
-| Fri.  |  |  |  |  |
-| Sat.  | [8:30-10pm] | [1.5] | [adjusted OCR parameters for improved text recognition] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/9968bb6bedeb8b81526f43d15a67e6ad3d6109b4) |
-| Sun.  | [11-1:15pm] | [2.25] | [implemented basic data read-in code for test images] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/9968bb6bedeb8b81526f43d15a67e6ad3d6109b4) |
+| Thu.  |  |  |  |  |
+| Fri.  | [10:15-11:15pm] | [1] | [Japanese phrase to word separation] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/e894b5945eddf37aeee0254df6cf1428825deaaa) |
+| Sat.  | [12:00pm-1:00am] | [1] | [watched video of OCR from-scratch development] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/e894b5945eddf37aeee0254df6cf1428825deaaa) |
+| Sun.  | [1:00pm-3:30pm] & [5:00pm-6:00pm] | [3.5] | [completed data testing and all columns] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/98298a5e7979c5455e890bba2b9d9bb9f4f95e3b) |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 7.25**
+**Total \# of hours worked this week: 5.5**
 
 ## What you accomplished (or attempted) this week:
 
-I began this week by making further adjustments to my code to specifically improve OCR text-recognition. I fine tuned the values of det_db_box_thresh and det_db_unclip_ratio as well as provide simple image processing code for gray scaling (turning the image to black and white) and applying simple denoising to remove complex background imagery. This slighty improved the amount of recognized text. In addition, I set a limit to the confidence level of extracted text I use so that non below 65% confidence will be implemented into the data.
+This week I completed the difficult data extraction and implementation on my test file. Sepecifically, I began by first taking my Japanese OCR extracted phrases and splitting them into words using the Fugashi tokenization. From this, I was able to add all my necessary columns of data for future analysis, these being: word_US, word_POS, img_series, length, word_freq, hiragana_ratio, katakana_ratio, and kanji_ratio. 
 
-In addition to the parameter adjustments, I added code to read several Japanese manga JPG images instead of just one, as well as read the extracted information into a CSV file called test_data.csv. This was for testing how to properly read in data into a CSV file, as well as getting a feel for the time and computational effort required for future data preparation process on the real raw data. The test CSV file contains extracted text of 5 images with three pieces of information. These are the specifc phrase extracted from each image, the image name from which the phrase came from, and the confidence level of the extracted phrase.
+Going into detail, the word_US column is an english translation of the word_JAP column of the OCR extracted Japanese word. The img_series or image series is at the moment simply the name of the parent file in which the specific image is located. This will be changed a bit to account for the three Grappler Baki manga series of the normal raw data. The word frequency is the amount of times the specific word appears in the overall word list in a decimal format. The final three column names are the Japanese alphabetical ratios of how many certain types of characters of an alphabet appear in the whole specific word, also in decimal format.
 
 ## Any setbacks/roadblocks you experienced:
 
-One specific roadblock that I struggled with was greatly improving the amount of text that the OCR recognizes. From testing, when performing OCR on a manga panel, a image that comes right before or after the main manga text pages and includes aspects such as title and background information, the OCR had a much harder time recognizing text from these due to the lack of speech bubbles. My adjustments made minor improvements, but overall the issue has not been solved.
+Most of the work this week was somewhat simple, needing only implementation of new libraries or use of already built-in python functions for column calculation. Considering this, the issue for this week was that the translation of the word_JAP Japanese word to English word_US was complicated. Originally I attempted to use the site Jisho.com and it's translation to give me English outputs, but this involved a lot of complexity regarding how many requests you can send to a site without getting blocked from it. In addition, the Jisho dictionary translations were often complex and long, not allowing for simple one-to-one language conversion. Therefore, I changed my strategy and instead implemented the use of Google Translate, which solved both issues significantly, as a result reducing the time needed to run the program on the test images, as well as gettin better simpler translations.
 
 ## What you plan to work on next:
 
-For next week I plan to further develop my data preparation, now working with the real raw data images. Since this requires a lot of computational power, I imaging that I would have to make a way for the code to continually update me with its progress or maybe take short breaks between OCR extraction and actual reading into the CSV file. In addition, I plan to start working on refining and calculating all my needed variables for the proper dataset.
+The next week will involve a very tricky part of the project due to me having to take this code of PaddleOCR.py and running it on the raw data of my three Grappler Baki series. This will take a lot of time, probably several hours of straight program running. I will have to see if I can implement ways for consistent updates to give me a check on the program's progress.
+
+In addition, I might start working on my first question touching on the topic of the relationship between OCR confidence and Japanese word complexity. From this I would also touch on the subject of the limitations of using OCR models to specifically extract Japanese manga text from JPG images.
 
 ## Are you on track? If not, how will you get back on track?
 
-Currently, even though I have had difficulties and have experiences a roadblock, I am on track with my work, as most of the basic testing parts have been completed and all the minor parameters have been set and refined.
+Even though I put in less time on work then compared to last week, I still am on good track for this project. Completing the technical code section is a good pausing point for this week to allow me time to properly finish my data and start working on analysis in week 6.

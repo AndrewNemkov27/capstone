@@ -148,6 +148,9 @@ for filename in os.listdir(image_folder):
                             word_counts[word] += 1
                             total_words += 1
 
+# initialize counter for success message
+processed_count = 0
+
 # Step 2: write to CSV with frequency and ratios
 with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
     writer = csv.writer(file)
@@ -192,6 +195,8 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
                                 writer.writerow([word, translation, pos, cleaned_text, filename, img_series, word_length, f"{confidence:.2f}", word_frequency, hiragana_ratio, katakana_ratio, kanji_ratio])
                                 data_written = True
 
-            # output success message
             if data_written:
-                print(f"{filename} was successfully processed.")
+                processed_count += 1
+                print()
+                print(f"#{processed_count}: {filename} was successfully processed.")
+
