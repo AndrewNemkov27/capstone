@@ -7,6 +7,14 @@ from collections import Counter
 from paddleocr import PaddleOCR
 from googletrans import Translator
 
+import psutil
+
+
+def print_memory_usage():
+    memory = psutil.virtual_memory()
+    print(f"Memory Usage: {memory.percent}% used, {memory.available / (1024 * 1024):.2f} MB available")
+
+
 # Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
 
@@ -107,11 +115,11 @@ ocr = PaddleOCR(
 )
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-image_folder = os.path.join(script_dir, "rawData", "Baki2Dou2\BakiDou2 v1-17")
+image_folder = os.path.join(script_dir, "rawData", "Baki2Dou2")
 csv_file = os.path.join(script_dir, "realData.csv")
 
 # extract parent folder name for img_series
-img_series = "Hanma Baki"
+img_series = "Baki Dou 2"
 
 # word frequency counter
 word_counts = Counter()
@@ -120,6 +128,7 @@ total_words = 0
 # Step 1: count word occurrences
 for filename in os.listdir(image_folder):
     if filename.lower().endswith(".jpg"):
+        print_memory_usage()
         image_path = os.path.join(image_folder, filename)
         img = cv2.imread(image_path)
 
@@ -197,6 +206,6 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
 
             if data_written:
                 processed_count += 1
+                print_memory_usage()
                 print()
                 print(f"#{processed_count}: {filename} was successfully processed.")
-
