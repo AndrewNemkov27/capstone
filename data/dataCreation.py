@@ -106,10 +106,10 @@ ocr = PaddleOCR(
 )
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-image_folder = os.path.join(script_dir, "rawData", "Baki2Dou2")
+image_folder = os.path.join(script_dir, "rawData", "Baki3Rahen")
 csv_file = os.path.join(script_dir, "realData.csv")
 
-img_series = "Baki Dou 2"
+img_series = "Baki Rahen"
 
 # initialize word frequency counter
 word_counts = Counter()
@@ -119,7 +119,7 @@ total_words = 0
 file_exists = os.path.isfile(csv_file)
 headers = ["word_JAP", "word_US", "word_POS", "phrase_JAP", "img_title", "img_series", "length", "confidence", "word_freq", "hiragana_ratio", "katakana_ratio", "kanji_ratio"]
 
-# step 1: process images and write to CSV (without word frequencies)
+# process images and write to CSV (without word frequencies)
 processed_count = 0
 
 with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
@@ -166,23 +166,4 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
             processed_count += 1
             print(f"#{processed_count}: {filename} was successfully processed.")
 
-print("OCR Processing Complete. Now updating word frequencies...")
-
-# step 2: update CSV with final word frequencies
-updated_rows = []
-
-with open(csv_file, mode="r", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file)
-    header = next(reader)
-    for row in reader:
-        word = row[0]
-        row[8] = round(word_counts[word] / total_words, 4)  # update word_freq
-        updated_rows.append(row)
-
-# rewrite CSV with updated word frequencies
-with open(csv_file, mode="w", newline="", encoding="utf-8") as file:
-    writer = csv.writer(file)
-    writer.writerow(header)
-    writer.writerows(updated_rows)
-
-print("Word frequency update complete.")
+print("finished all processing")
