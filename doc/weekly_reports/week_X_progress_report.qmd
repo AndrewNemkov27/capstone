@@ -2,7 +2,7 @@
 title: "Week 5 Progress Report"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 2/23/23
+date: 03/02/23
 date-format: "[Week ending: ] M/D/YY"
 number-sections: false
 format:
@@ -17,30 +17,26 @@ format:
 | Tue.  |  |  |  |  |
 | Wed.  |  |  |  |  |
 | Thu.  |  |  |  |  |
-| Fri.  | [10:15-11:15pm] | [1] | [Japanese phrase to word separation] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/e894b5945eddf37aeee0254df6cf1428825deaaa) |
-| Sat.  | [12:00pm-1:00am] | [1] | [watched video of OCR from-scratch development] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/e894b5945eddf37aeee0254df6cf1428825deaaa) |
-| Sun.  | [1:00pm-3:30pm] & [5:00pm-6:00pm] | [3.5] | [completed data testing and all columns] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/98298a5e7979c5455e890bba2b9d9bb9f4f95e3b) |
+| Fri.  |  |  |  |  |
+| Sat.  | [10:30pm-1:00am] | [2.5] | [read in first of three series (Hanma Baki)] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/7d35df0c433d588f88aa1311cee906a187e00285) |
+| Sun.  | [11:30am-12:30am] & [6:30pm-7:30pm] | [2] | [failed to finish data creation] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/8c3a309c887da6bcd00559150b7cd9413aa0aac1) |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 5.5**
+**Total \# of hours worked this week: 4.5**
 
 ## What you accomplished (or attempted) this week:
 
-This week I completed the difficult data extraction and implementation on my test file. Sepecifically, I began by first taking my Japanese OCR extracted phrases and splitting them into words using the Fugashi tokenization. From this, I was able to add all my necessary columns of data for future analysis, these being: word_US, word_POS, img_series, length, word_freq, hiragana_ratio, katakana_ratio, and kanji_ratio. 
-
-Going into detail, the word_US column is an english translation of the word_JAP column of the OCR extracted Japanese word. The img_series or image series is at the moment simply the name of the parent file in which the specific image is located. This will be changed a bit to account for the three Grappler Baki manga series of the normal raw data. The word frequency is the amount of times the specific word appears in the overall word list in a decimal format. The final three column names are the Japanese alphabetical ratios of how many certain types of characters of an alphabet appear in the whole specific word, also in decimal format.
+This week I completed processing all of the jpg images from Baki1Hanma raw data folder. These images are all from the Hanma Baki manga series, the first of three series to be analyzed for this project. To correctly run in this data into the new realData.csv file, I adjusted the value of img_series. After this successfully processed, I continued to try to process the other two manga series images.
 
 ## Any setbacks/roadblocks you experienced:
 
-Most of the work this week was somewhat simple, needing only implementation of new libraries or use of already built-in python functions for column calculation. Considering this, the issue for this week was that the translation of the word_JAP Japanese word to English word_US was complicated. Originally I attempted to use the site Jisho.com and it's translation to give me English outputs, but this involved a lot of complexity regarding how many requests you can send to a site without getting blocked from it. In addition, the Jisho dictionary translations were often complex and long, not allowing for simple one-to-one language conversion. Therefore, I changed my strategy and instead implemented the use of Google Translate, which solved both issues significantly, as a result reducing the time needed to run the program on the test images, as well as gettin better simpler translations.
+I hit quite a significant roadblock today regarding finishing processing all JPG images. It seems that the Paddle OCR model can't read or understand one of the images in the Baki2Dou2 folder, causing a run time error to occur after around 30 minutes of processing. I believed this originally to be a possible memory issue on my computer, but this is not the case as after implementing some basic code, the memory percentage is never exceeded. I will have to do further testing and fidgeting with the code, but most likely this is an issue with one of the JPG images in the folder.
 
 ## What you plan to work on next:
 
-The next week will involve a very tricky part of the project due to me having to take this code of PaddleOCR.py and running it on the raw data of my three Grappler Baki series. This will take a lot of time, probably several hours of straight program running. I will have to see if I can implement ways for consistent updates to give me a check on the program's progress.
-
-In addition, I might start working on my first question touching on the topic of the relationship between OCR confidence and Japanese word complexity. From this I would also touch on the subject of the limitations of using OCR models to specifically extract Japanese manga text from JPG images.
+The next week will require a significant amount of work regarding the finalization of data creation for all three manga series as well as starting to work on question 1 of the project for analysis of the relationship between OCR confidence and Japanese word complexity.
 
 ## Are you on track? If not, how will you get back on track?
 
-Even though I put in less time on work then compared to last week, I still am on good track for this project. Completing the technical code section is a good pausing point for this week to allow me time to properly finish my data and start working on analysis in week 6.
+I am not on track this week due to the above significant setback. I will have to spend significanly more time next week working on this project to get back on to normal work pace. In addition, I believe it will be better for me to try to focus my attention onto this project for weekdays that I have time, most likely Monday, Wednesday, and Friday.

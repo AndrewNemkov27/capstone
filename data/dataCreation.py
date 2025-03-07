@@ -2,18 +2,11 @@ import cv2
 import re
 import csv
 import os
+import gc
 import fugashi
 from collections import Counter
 from paddleocr import PaddleOCR
 from googletrans import Translator
-
-import psutil
-
-
-def print_memory_usage():
-    memory = psutil.virtual_memory()
-    print(f"Memory Usage: {memory.percent}% used, {memory.available / (1024 * 1024):.2f} MB available")
-
 
 # Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
@@ -49,7 +42,6 @@ translation_cache = {}
 def get_english_translation(word):
     if word in translation_cache:
         return translation_cache[word]
-
     try:
         translated = translator.translate(word, src="ja", dest="en")
         translation_cache[word] = translated.text
@@ -69,7 +61,6 @@ def tokenize_japanese(text):
         # ignore grammatical particles (助詞)
         if pos == "助詞":
             continue
-
         # ignore single-character hiragana or katakana words
         if len(surface) == 1 and re.match(r'^[ぁ-んァ-ン]$', surface):
             continue
@@ -83,7 +74,7 @@ def tokenize_japanese(text):
 # define character sets for categorization
 HIRAGANA = set("ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ")
 KATAKANA = set("ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶ")
-KANJI_RANGE = (ord("一"), ord("龯"))  # unicode range for Kanji characters
+KANJI_RANGE = (ord("一"), ord("龯"))
 
 
 # function to compute character ratios
@@ -104,7 +95,7 @@ ocr = PaddleOCR(
     lang="japan",
     rec_algorithm="SVTR_LCNet",
     use_angle_cls=True,
-    rec_batch_num=50,
+    rec_batch_num=10,
     rec_char_type="jp",
     det_db_box_thresh=0.3,
     det_db_unclip_ratio=2,
@@ -118,72 +109,40 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 image_folder = os.path.join(script_dir, "rawData", "Baki2Dou2")
 csv_file = os.path.join(script_dir, "realData.csv")
 
-# extract parent folder name for img_series
 img_series = "Baki Dou 2"
 
-# word frequency counter
+# initialize word frequency counter
 word_counts = Counter()
 total_words = 0
 
-# Step 1: count word occurrences
-for filename in os.listdir(image_folder):
-    if filename.lower().endswith(".jpg"):
-        print_memory_usage()
-        image_path = os.path.join(image_folder, filename)
-        img = cv2.imread(image_path)
+# check if CSV file exists and has headers
+file_exists = os.path.isfile(csv_file)
+headers = ["word_JAP", "word_US", "word_POS", "phrase_JAP", "img_title", "img_series", "length", "confidence", "word_freq", "hiragana_ratio", "katakana_ratio", "kanji_ratio"]
 
-        if img is None:
-            print(f"Skipping {filename}: Unable to read image.")
-            continue
-
-        # convert to grayscale and apply denoising
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        img_denoised = cv2.fastNlMeansDenoising(img_gray, None, 30, 7, 21)
-
-        # run OCR
-        results = ocr.ocr(img_denoised, cls=True)
-
-        if results and results[0]:
-            for result in results[0]:
-                if isinstance(result, list) and len(result) > 1:
-                    _, (text, _) = result
-                    cleaned_text = clean_non_japanese(text)
-
-                    if len(cleaned_text) >= 2:
-                        words_with_pos = tokenize_japanese(cleaned_text)
-
-                        # count each word
-                        for word, _ in words_with_pos:
-                            word_counts[word] += 1
-                            total_words += 1
-
-# initialize counter for success message
+# step 1: process images and write to CSV (without word frequencies)
 processed_count = 0
 
-# Step 2: write to CSV with frequency and ratios
 with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
     writer = csv.writer(file)
 
-    # write header only if file is empty
-    if file.tell() == 0:
-        writer.writerow(["word_JAP", "word_US", "word_POS", "phrase_JAP", "img_title", "img_series", "length", "confidence", "word_freq", "hiragana_ratio", "katakana_ratio", "kanji_ratio"])
+    if not file_exists:
+        writer.writerow(headers)
 
-    # process images again to write the data
     for filename in os.listdir(image_folder):
         if filename.lower().endswith(".jpg"):
             image_path = os.path.join(image_folder, filename)
             img = cv2.imread(image_path)
 
             if img is None:
+                print(f"Skipping {filename}: Unable to read image.")
                 continue
 
-            # convert to grayscale and denoise
+            # convert to grayscale and apply denoising
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             img_denoised = cv2.fastNlMeansDenoising(img_gray, None, 30, 7, 21)
 
-            # OCR
+            # run OCR
             results = ocr.ocr(img_denoised, cls=True)
-            data_written = False  # track if data was written
 
             if results and results[0]:
                 for result in results[0]:
@@ -196,16 +155,34 @@ with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
                             translations = {word: get_english_translation(word) for word, _ in words_with_pos}
 
                             for word, pos in words_with_pos:
-                                translation = translations.get(word, "N/A")
-                                word_length = len(word)
-                                word_frequency = round(word_counts[word] / total_words, 4)
-                                hiragana_ratio, katakana_ratio, kanji_ratio = compute_character_ratios(word)
+                                word_counts[word] += 1
+                                total_words += 1
+                                writer.writerow([word, translations.get(word, "N/A"), pos, cleaned_text, filename, img_series, len(word), f"{confidence:.2f}", 0.0, *compute_character_ratios(word)])
 
-                                writer.writerow([word, translation, pos, cleaned_text, filename, img_series, word_length, f"{confidence:.2f}", word_frequency, hiragana_ratio, katakana_ratio, kanji_ratio])
-                                data_written = True
+            # free memory
+            del img, img_gray, img_denoised, results
+            gc.collect()
 
-            if data_written:
-                processed_count += 1
-                print_memory_usage()
-                print()
-                print(f"#{processed_count}: {filename} was successfully processed.")
+            processed_count += 1
+            print(f"#{processed_count}: {filename} was successfully processed.")
+
+print("OCR Processing Complete. Now updating word frequencies...")
+
+# step 2: update CSV with final word frequencies
+updated_rows = []
+
+with open(csv_file, mode="r", newline="", encoding="utf-8") as file:
+    reader = csv.reader(file)
+    header = next(reader)
+    for row in reader:
+        word = row[0]
+        row[8] = round(word_counts[word] / total_words, 4)  # update word_freq
+        updated_rows.append(row)
+
+# rewrite CSV with updated word frequencies
+with open(csv_file, mode="w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+    writer.writerow(header)
+    writer.writerows(updated_rows)
+
+print("Word frequency update complete.")
