@@ -1,8 +1,8 @@
 ---
-title: "Week 5 Progress Report"
+title: "Week 7 Progress Report"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 03/02/23
+date: 03/09/23
 date-format: "[Week ending: ] M/D/YY"
 number-sections: false
 format:
@@ -13,30 +13,32 @@ format:
 
 | Day  | Time  | \# Hours | Task(s) | GH Commit(s) |
 |------|-------|----------|---------|--------|
-| Mon.  |  |  |  |  |
+| Mon.  | [5:20pm-8:15pm] & [10:45pm-12:30am] | [4.66] | [further data creation issues and testing] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
 | Tue.  |  |  |  |  |
 | Wed.  |  |  |  |  |
-| Thu.  |  |  |  |  |
-| Fri.  |  |  |  |  |
-| Sat.  | [10:30pm-1:00am] | [2.5] | [read in first of three series (Hanma Baki)] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/7d35df0c433d588f88aa1311cee906a187e00285) |
-| Sun.  | [11:30am-12:30am] & [6:30pm-7:30pm] | [2] | [failed to finish data creation] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/8c3a309c887da6bcd00559150b7cd9413aa0aac1) |
+| Thu.  | [5:10pm-8:00pm] | [2.83] | [fixed creation issues with memory and processed half of Baki Dou 2] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
+| Fri.  | [9:10am-11:30am] | [1.83] | [finished all data processing of 3 manga series] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/fa2eb8f73ff7e1c0e684a917de5558d32bb86151) |
+| Sat.  |  |  |  |  |
+| Sun.  | [4:30pm-5:00am] & [6:45pm-8:00pm] | [1.75] | [organized files and started question 1] | [Link 3](https://github.com/AndrewNemkov27/capstone/commit/d5d027b7cdb0c3a7e77ddc318d8f1ad8d6efc6ce) |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 4.5**
+**Total \# of hours worked this week: 11.07**
 
 ## What you accomplished (or attempted) this week:
 
-This week I completed processing all of the jpg images from Baki1Hanma raw data folder. These images are all from the Hanma Baki manga series, the first of three series to be analyzed for this project. To correctly run in this data into the new realData.csv file, I adjusted the value of img_series. After this successfully processed, I continued to try to process the other two manga series images.
+This week has been extrmely significant in my project progress. I was finally able to fix all my issues regarding data processing and creation. The problem was during OCR model code running, my computer kept running out of memory and the code kept either crashing or stopping abruptly. I was able to handle this by reducing the bathc size of my code and pushing back calculation of word frequencies till the very end of data creation. After around a total of 6 hours including issues, with the speed of around 800 images processed per hour, I was able to successfully create my dataset with around 49,000 rows of information.
+
+In addition, I began working on my first question delving into analysis of OCR complexity. I began by creation of my scatter plot for this analysis and am currenly workign on refining this graph before moving on to other parts.
 
 ## Any setbacks/roadblocks you experienced:
 
-I hit quite a significant roadblock today regarding finishing processing all JPG images. It seems that the Paddle OCR model can't read or understand one of the images in the Baki2Dou2 folder, causing a run time error to occur after around 30 minutes of processing. I believed this originally to be a possible memory issue on my computer, but this is not the case as after implementing some basic code, the memory percentage is never exceeded. I will have to do further testing and fidgeting with the code, but most likely this is an issue with one of the JPG images in the folder.
+I had a lot of difficulty fidgetting and figuring out data creation and computer memory optimization, but after a good amoutn of waiting and brute force approach I was able to correctly put together my data to be used for this analysis. Currently I have a light issue of my scatter plot for question 1 looking a little strange and not very informative, so I am takking steps to improve the visulization.
 
 ## What you plan to work on next:
 
-The next week will require a significant amount of work regarding the finalization of data creation for all three manga series as well as starting to work on question 1 of the project for analysis of the relationship between OCR confidence and Japanese word complexity.
+For the next week I plan to continue working on my question 1 and completing all 3 parts of this complexity analysis. The other two visualizations will involve the box plot and heat map of this portion of the project analysis. After this completion, I will work on creatingm my basic presentation for the in-person class on Thursday 03/13.
 
 ## Are you on track? If not, how will you get back on track?
 
-I am not on track this week due to the above significant setback. I will have to spend significanly more time next week working on this project to get back on to normal work pace. In addition, I believe it will be better for me to try to focus my attention onto this project for weekdays that I have time, most likely Monday, Wednesday, and Friday.
+I have gotten back on track this week due to putting in a lot more effort on the project on Monday and Thursday. This allowed me to get over the hardest hurdle of this project to continue to actually answering the questions.
