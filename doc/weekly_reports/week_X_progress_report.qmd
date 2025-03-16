@@ -13,7 +13,7 @@ format:
 
 | Day  | Time  | \# Hours | Task(s) | GH Commit(s) |
 |------|-------|----------|---------|--------|
-| Mon.  | [5:20pm-8:15pm] & [10:45pm-12:30am] | [4.66] | [further data creation issues and testing] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
+| Mon.  | [3:00pm-5:15pm] | [2.25] | [finalized question 1 graphs] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
 | Tue.  |  |  |  |  |
 | Wed.  |  |  |  |  |
 | Thu.  | [5:10pm-8:00pm] | [2.83] | [fixed creation issues with memory and processed half of Baki Dou 2] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
