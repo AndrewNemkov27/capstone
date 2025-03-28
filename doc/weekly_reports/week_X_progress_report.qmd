@@ -1,8 +1,8 @@
 ---
-title: "Week 7 Progress Report"
+title: "Week 8 Progress Report"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 03/09/23
+date: 03/16/23
 date-format: "[Week ending: ] M/D/YY"
 number-sections: false
 format:
@@ -13,32 +13,30 @@ format:
 
 | Day  | Time  | \# Hours | Task(s) | GH Commit(s) |
 |------|-------|----------|---------|--------|
-| Mon.  | [3:00pm-5:15pm] | [2.25] | [finalized question 1 graphs] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
-| Tue.  |  |  |  |  |
-| Wed.  |  |  |  |  |
-| Thu.  | [5:10pm-8:00pm] | [2.83] | [fixed creation issues with memory and processed half of Baki Dou 2] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/0c832716341968e4a3a2390acafeeeca795f6ee3) |
-| Fri.  | [9:10am-11:30am] | [1.83] | [finished all data processing of 3 manga series] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/fa2eb8f73ff7e1c0e684a917de5558d32bb86151) |
-| Sat.  |  |  |  |  |
-| Sun.  | [4:30pm-5:00am] & [6:45pm-8:00pm] | [1.75] | [organized files and started question 1] | [Link 3](https://github.com/AndrewNemkov27/capstone/commit/d5d027b7cdb0c3a7e77ddc318d8f1ad8d6efc6ce) |
+| Mon.  | [3:00pm-5:15pm] | [2.25] | [finalized question 1 graphs] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/6e3af78dc426576f8c2b23d6c23c2cd1a0417a8a) |
+| Tue.  | [10:30pm-2:00am] | [3.5] | [worked on presentation slides] |  |
+| Wed.  | [11:00am-1:00pm] | [2] | [finished presentation slides] |  |
+| Thu.  |  |  |  |  |
+| Fri.  |  |  |  |  |
+| Sat.  | [9:30pm-11:30pm] | [2] | [finished peer reviews] |  |
+| Sun.  |  |  |  |  |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 11.07**
+**Total \# of hours worked this week: 9.75**
 
 ## What you accomplished (or attempted) this week:
 
-This week has been extrmely significant in my project progress. I was finally able to fix all my issues regarding data processing and creation. The problem was during OCR model code running, my computer kept running out of memory and the code kept either crashing or stopping abruptly. I was able to handle this by reducing the bathc size of my code and pushing back calculation of word frequencies till the very end of data creation. After around a total of 6 hours including issues, with the speed of around 800 images processed per hour, I was able to successfully create my dataset with around 49,000 rows of information.
-
-In addition, I began working on my first question delving into analysis of OCR complexity. I began by creation of my scatter plot for this analysis and am currenly workign on refining this graph before moving on to other parts.
+Most week of this week I worked on my midterm presentation on my so-far progress of my project. I finished working on completing all my graphs for question 1, as well as giving all these their proper styling, cleaning, and coloring. In addition, following the general rubric, I created a presentation of around 20 slides that talked about my project's background, data preparation and creation process, the question I answered currently, and finally what other question I want to answer regarding my dataset.
 
 ## Any setbacks/roadblocks you experienced:
 
-I had a lot of difficulty fidgetting and figuring out data creation and computer memory optimization, but after a good amoutn of waiting and brute force approach I was able to correctly put together my data to be used for this analysis. Currently I have a light issue of my scatter plot for question 1 looking a little strange and not very informative, so I am takking steps to improve the visulization.
+I didn't really have any significant setback in my coding or work regarding the presentation. I had a few issues on planning out my presentation styling and use of images, but this really just gave me a better idea on how I would plan this out for the future board and blog of my project, as it most likely will follow the same stlying. 
 
 ## What you plan to work on next:
 
-For the next week I plan to continue working on my question 1 and completing all 3 parts of this complexity analysis. The other two visualizations will involve the box plot and heat map of this portion of the project analysis. After this completion, I will work on creatingm my basic presentation for the in-person class on Thursday 03/13.
+For the next week I plan to start working on my code for question 2, which regards word frequency and speech patterns. I will be creating visualization for all of my data's word frequencies and parts of speech, as well as performing TF-IDF on the dataset to understand which words are unique to specific Baki series.
 
 ## Are you on track? If not, how will you get back on track?
 
-I have gotten back on track this week due to putting in a lot more effort on the project on Monday and Thursday. This allowed me to get over the hardest hurdle of this project to continue to actually answering the questions.
+I am on track regarding my project, but I know I might have a bit of trouble with TF-IDF, so I will have to schedule time to work on that portion of my coding specifically.
