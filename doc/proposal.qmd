@@ -91,7 +91,7 @@ The study  of key themes across the various of Baki series will follow a similar
 
 This question can be effectively answered with a detailed stacked bar chart.
 
-* This visualization will exxplore the thematic word frequency across series, with the x-axis showing the three Baki manga series and the y-axis showing the total frequency of theme-related words. The bars of the graph will be divided into three segments: strength-related words, violence-related words, and philosophy-related words. Each theme segment will be color-coded with each segment providing percentge of total as additional information. This more broad analysis will allow for a visualization of how Baki's sotorytelling has evolved how how language in this manga has shifted over time. Specifically, it will offer insights into the linguistic structure and character development in the franchise.
+* This visualization will exxplore the thematic word frequency across series, with the x-axis showing the three Baki manga series and the y-axis showing the total frequency of theme-related words. The bars of the graph will be divided into three segments: strength-related words, violence-related words, and philosophy-related words. Each theme segment will be color-coded with each segment providing percentge of total as additional information. This more broad analysis will allow for a visualization of how Baki's storytelling has evolved and how language in this manga has shifted over time. Specifically, it will offer insights into the linguistic structure and character development in the franchise.
 
 
 # Work plan

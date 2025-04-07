@@ -1,8 +1,8 @@
 ---
-title: "Week 8 Progress Report"
+title: "Week 9 Progress Report"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 03/16/23
+date: 03/30/23
 date-format: "[Week ending: ] M/D/YY"
 number-sections: false
 format:
@@ -13,30 +13,30 @@ format:
 
 | Day  | Time  | \# Hours | Task(s) | GH Commit(s) |
 |------|-------|----------|---------|--------|
-| Mon.  | [3:00pm-5:15pm] | [2.25] | [finalized question 1 graphs] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/6e3af78dc426576f8c2b23d6c23c2cd1a0417a8a) |
-| Tue.  | [10:30pm-2:00am] | [3.5] | [worked on presentation slides] |  |
-| Wed.  | [11:00am-1:00pm] | [2] | [finished presentation slides] |  |
+| Mon.  |  |  |  |  |
+| Tue.  |  |  |  |  |
+| Wed.  |  |  |  |  |
 | Thu.  |  |  |  |  |
-| Fri.  |  |  |  |  |
-| Sat.  | [9:30pm-11:30pm] | [2] | [finished peer reviews] |  |
-| Sun.  |  |  |  |  |
+| Fri.  | [12:00pm-4:00pm & 12:00am-1:00am] | [5] | [finished part 1 and 2 for question 2] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/c28bc22645700df6eb04c8d700418451f4a22327) |
+| Sat.  |  |  |  |  |
+| Sun.  | [4:00pm-7:00pm] | [3] | [finished part 3 of question 2 and started question 3] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/dbd1bfbad5ed7e8ed46b59cc16cdbc40d39d6270) |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 9.75**
+**Total \# of hours worked this week: 8**
 
 ## What you accomplished (or attempted) this week:
 
-Most week of this week I worked on my midterm presentation on my so-far progress of my project. I finished working on completing all my graphs for question 1, as well as giving all these their proper styling, cleaning, and coloring. In addition, following the general rubric, I created a presentation of around 20 slides that talked about my project's background, data preparation and creation process, the question I answered currently, and finally what other question I want to answer regarding my dataset.
+This week I completed all my visualizations for question 2, which related with analyzing word frequency and speech patterns. I was able to complete my graphics on the top 50 most and least frequent nouns in the three Baki series, ordinary and normalized distributions of each series' part of speech, and a visualization of the TF-IDF scores for each arc of the manga. In addition I wrote down all the interesting points from my visualizations for question 1 and 2 to help me in drafting out my poster and seeing what information I should put on it. Overall the results and my thinking back of my analysis was really interesting, allowing me to learn and note several things that I previously didn't know (or have enough proof of) for the Baki manga.
 
 ## Any setbacks/roadblocks you experienced:
 
-I didn't really have any significant setback in my coding or work regarding the presentation. I had a few issues on planning out my presentation styling and use of images, but this really just gave me a better idea on how I would plan this out for the future board and blog of my project, as it most likely will follow the same stlying. 
+I did just recently experience one setback in my coding regarding my final question. I was thinking of grouping my word_US english words in my dataset into separate themes, and then perform analysis on this grouping. This task seems a lot harder than what I originally imaged, as there are many things and issues to consider. At the moment I am seeing if using NLTK and the process of LDA would help me properly group my words.
 
 ## What you plan to work on next:
 
-For the next week I plan to start working on my code for question 2, which regards word frequency and speech patterns. I will be creating visualization for all of my data's word frequencies and parts of speech, as well as performing TF-IDF on the dataset to understand which words are unique to specific Baki series.
+For next week I plan to continue chipping away at my final question for my project and put most of my effort refining my poster and the information I present on it. I will have to most likely schedule myself specific time in the week to do these things, as it seems my weekly amount of work keeps constantly increasing as the semester progresses.
 
 ## Are you on track? If not, how will you get back on track?
 
-I am on track regarding my project, but I know I might have a bit of trouble with TF-IDF, so I will have to schedule time to work on that portion of my coding specifically.
+Considering all my issues I am in fact on track for completion of my project. This is because I have most of the confusing parts done, as I really only have a single issue that needs addressing.
