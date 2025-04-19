@@ -1,8 +1,8 @@
 ---
-title: "Week 9 Progress Report"
+title: "Week 12 Progress Report"
 subtitle: "DATA 450 Capstone"
 author: "Andrew Nemkov"
-date: 03/30/23
+date: 04/19/23
 date-format: "[Week ending: ] M/D/YY"
 number-sections: false
 format:
@@ -17,26 +17,31 @@ format:
 | Tue.  |  |  |  |  |
 | Wed.  |  |  |  |  |
 | Thu.  |  |  |  |  |
-| Fri.  | [12:00pm-4:00pm & 12:00am-1:00am] | [5] | [finished part 1 and 2 for question 2] | [Link 1](https://github.com/AndrewNemkov27/capstone/commit/c28bc22645700df6eb04c8d700418451f4a22327) |
-| Sat.  |  |  |  |  |
-| Sun.  | [4:00pm-7:00pm] | [3] | [finished part 3 of question 2 and started question 3] | [Link 2](https://github.com/AndrewNemkov27/capstone/commit/dbd1bfbad5ed7e8ed46b59cc16cdbc40d39d6270) |
+| Fri.  | [9:00pm-11:00pm] | [2] | [background research on blog posts] |  |
+| Sat.  | [3:30pm-7:30pm] | [4] | [further research on neural networks and OCR usage] |  |
+| Sun.  |  |  |  |  |
 
 : {tbl-colwidths="[10, 15, 12, 50, 13]"}
 
-**Total \# of hours worked this week: 8**
+**Total \# of hours worked this week: 6**
 
 ## What you accomplished (or attempted) this week:
 
-This week I completed all my visualizations for question 2, which related with analyzing word frequency and speech patterns. I was able to complete my graphics on the top 50 most and least frequent nouns in the three Baki series, ordinary and normalized distributions of each series' part of speech, and a visualization of the TF-IDF scores for each arc of the manga. In addition I wrote down all the interesting points from my visualizations for question 1 and 2 to help me in drafting out my poster and seeing what information I should put on it. Overall the results and my thinking back of my analysis was really interesting, allowing me to learn and note several things that I previously didn't know (or have enough proof of) for the Baki manga.
+The majority of this week I spent time research on further improvements of changes that my code would need for the future, since I know my current code can make significant adjustments. On Friday I spent a bit of time looking into making data science blog posts as I watched a video online that delved into the usage of sites such as medium.com, GitHub pages, or dev.to to make blog posts for projects, as well as what needs to be in a blog post in terms of content and description.
+
+Additionally, I spent time researching the basics of development of neural networks, as in how they function on a basic level using the concepts of linear algebra and calculus to "learn". I also spent time researching on further usage of OCR method on Japanese language and I was able to find an interesting video where researcher Bing Wang went into analyzing performance of three types of OCR models on Japanese medical documents. This by far was the most useful information I saw, as one of the three models she went over was PaddleOCR, which I am currently using in my code. I also discovered interesting things from her research, specifically that all the three models' accuracy improved with an increase of image quality. Her final note for her presentation was that overall, the Tesseract model seems to be the best performer in terms of accuracy rate and time efficiency compared to the other OCR models publicly available.
+
+This is the OCR presentation I watched below for further context:
+https://www.youtube.com/watch?v=OitWeFVvShc
 
 ## Any setbacks/roadblocks you experienced:
 
-I did just recently experience one setback in my coding regarding my final question. I was thinking of grouping my word_US english words in my dataset into separate themes, and then perform analysis on this grouping. This task seems a lot harder than what I originally imaged, as there are many things and issues to consider. At the moment I am seeing if using NLTK and the process of LDA would help me properly group my words.
+I was expecting to find it very difficult to find information regarding OCR usage for specifically the Japanese language, but I think I was very fortunate to find the video I talked about above. So I didn't really run into any roadblocks this week for my project.
 
 ## What you plan to work on next:
 
-For next week I plan to continue chipping away at my final question for my project and put most of my effort refining my poster and the information I present on it. I will have to most likely schedule myself specific time in the week to do these things, as it seems my weekly amount of work keeps constantly increasing as the semester progresses.
+I plan to start working on my project's blog post next week to finalize all my research and findings into a single area for simplicity and ease-of-access.
 
 ## Are you on track? If not, how will you get back on track?
 
-Considering all my issues I am in fact on track for completion of my project. This is because I have most of the confusing parts done, as I really only have a single issue that needs addressing.
+I am very much on track for my project and it seems interesting how this project progressed over time. I am eager to complete it in the future.
