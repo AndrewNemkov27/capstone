@@ -1,6 +1,6 @@
 ---
 title: "Grappler Baki Word Analysis"
-subtitle: "Spring 2025"
+subtitle: "A Data Science Approach to Understanding Language in Baki"
 author: "Andrew Nemkov"
 bibliography: references.bib
 nocite: |
@@ -17,7 +17,7 @@ jupyter: python3
 ---
 
 
-![Source: Ramapo College of New Jersey](https://www.ramapo.edu/tours/wp-content/uploads/sites/344/2020/10/Fall-Arch-Straigh-Edit.jpg){fig-alt="A photo of the arch at Ramapo College."}
+![Manga Panel of Hanma Baki](blog_assets/p1Blog.jpg){fig-alt="One of numerous manga panels from the Baki manga."}
 
 
 # Welcome
