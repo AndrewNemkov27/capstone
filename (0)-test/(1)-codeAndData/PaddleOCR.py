@@ -106,9 +106,11 @@ ocr = PaddleOCR(
     use_dilation=True
 )
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-image_folder = os.path.join(script_dir, "test_jpg")
-csv_file = os.path.join(script_dir, "test_data.csv")
+code_dir = os.path.dirname(os.path.abspath(__file__))
+image_dir = os.path.dirname(code_dir)
+
+image_folder = os.path.join(image_dir, "(0)-test_jpg")
+csv_file = os.path.join(code_dir, "test_data.csv")
 
 # extract parent folder name for img_series
 img_series = os.path.basename(image_folder)

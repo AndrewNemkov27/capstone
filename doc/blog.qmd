@@ -17,54 +17,573 @@ jupyter: python3
 ---
 
 
-![Manga Panel of Hanma Baki](blog_assets/p1Blog.jpg){fig-alt="One of numerous manga panels from the Baki manga."}
+![Manga panel of Hanma Baki.](blog_assets/p2Blog.png){fig-alt="One of numerous manga panels from the Baki manga."}
 
 
-# Welcome
+# Motivation & Background
 
+**"強くあろうとする姿はかくも美しい"**
 
-**Welcome** to *my* ~~super~~ SUPER awesome `blog` post!
-$$x^2 = 1$$
+The short Japanese phrase above translates literally to "That who has a strong frame is beautiful". In a more general sense, it conveys the idea that one's body, once properly trained and developed, expresses more beauty than traditional features such as one's face.
 
-## Quarto is cool
+This often complicated and multi-layered idea is a foundational theme in the Japanese comic book style manga of *Grappler Baki*. In the story, a 17 year old boy by the name of Baki spends countless hours training and developing himself physically and mentally to one day stand in front of his father, the "strongest creature alive", and challenge him in martial combat.
 
-This section was copy/pasted from various parts of the [Quarto website](https://quarto.org/docs/get-started/hello/vscode.html).
+*Grappler Baki* is an example of one of today's few globally recognized Japanese works of visual and textual art that pushes the boundaries to what it means to be masculine. Popular as it is, the work's origin creates a barrier for those outside of Japan to interact with the manga. As a result of this language gao, the need for this project was born. 
 
-:::{.callout-note}
-Note that there are five types of callouts, including:
-`note`, `tip`, `warning`, `caution`, and `important`.
-:::
+Utilizing data science techniques, I aim bridge this gap in linguistics by analyzing the words used withing Baki's universe. Utilizing the tools of natural language processing, I seek to provide a deeper understanding of the work's narrative structure and themes that define *Grappler Baki*.
 
-:::{.callout-tip}
-## Tip With Caption
+# Dataset Creation
 
-This is an example of a callout with a caption.
-:::
+aaaaa
 
+## Setup and Parameters
 
-For your reference, here's an example of a Python code cell in Quarto, along with a figure that gets generated, along with a caption and a label so that it can be referred to automatically as "Figure 1" (or whatever) in the writeup.
+Setup
 
-For a demonstration of a line plot on a polar axis, see @fig-polar.
+Parameters
+
+Model Choice
+
+Implementation
+
+Time and Tracking Issues 
+![Result snippet of OCR code test run.](blog_assets/Implementation.png){fig-alt="Image showing test run of PaddleOCR code on image named DL-Raw.Net_111 (2).jpg."}
+
+# Dataset Preprocessing 
 
 ```{python}
-#| label: fig-polar
-#| fig-cap: "A line plot on a polar axis"
-
-import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
-r = np.arange(0, 2, 0.01)
-theta = 2 * np.pi * r
-fig, ax = plt.subplots(
-  subplot_kw = {'projection': 'polar'} 
+from scipy.stats import gaussian_kde
+from matplotlib.colors import LinearSegmentedColormap
+import matplotlib.patches as mpatches
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+from sklearn.decomposition import NMF
+
+import warnings
+
+#----------------------------------------------------------------
+
+# dataset name
+csv_file = r"C:\Users\andne\OneDrive\Pictures\Capstone1\capstone\(1)-main\(1)-codeAndData\realData.csv"
+# make dataframe of data
+df = pd.read_csv(csv_file)
+
+# remove outliers (words longer than 10 characters)
+df_filtered = df[df["length"] <= 10].copy()
+
+# print(df_filtered.head())
+``` 
+
+# OCR Confidence and Word Complexity
+
+aaaaa
+
+## Word Length Trends
+
+```{python}
+#| label: Q1-scatter
+#| fig-cap: "Scatter Plot: OCR Confidence vs. Word Length"
+
+# filter words with more than 15 characters
+long_words = df[df["word_JAP"].str.len() > 15][["word_JAP", "word_US"]]
+
+# print(long_words)
+
+#----------------------------------------------------------------
+
+# jitter strength
+jitter_strength = 0.1  # Adjust this value as needed
+
+# create jittered columns
+df_filtered["jittered_length"] = df_filtered["length"] + np.random.uniform(-jitter_strength, jitter_strength, len(df_filtered))
+df_filtered["jittered_confidence"] = df_filtered["confidence"] + np.random.uniform(-jitter_strength, jitter_strength, len(df_filtered))
+
+#----------------------------------------------------------------
+
+# KDE calculation using jittered values
+xy = np.vstack([df_filtered['jittered_length'], df_filtered['jittered_confidence']])
+kde = gaussian_kde(xy)  
+density = kde(xy)  
+
+# normalize density values
+norm_density = (density - np.min(density)) / (np.max(density) - np.min(density))
+
+#----------------------------------------------------------------
+
+# custom red palette (light red to dark red)
+custom_reds = LinearSegmentedColormap.from_list(
+    "custom_reds", ["#ffa07a", "#f08080", "#ff0000", "#ce2029", "#8b0000"]
 )
-ax.plot(theta, r)
-ax.set_rticks([0.5, 1, 1.5, 2])
-ax.grid(True)
+
+# question 1 plot 1: scatter plot with density-based coloring
+plt.figure(figsize=(6.5, 4.5))
+sns.scatterplot(
+    x=df_filtered["jittered_length"], 
+    y=df_filtered["jittered_confidence"], 
+    alpha=0.7, 
+    hue=norm_density,
+    palette=custom_reds,  # Apply custom red gradient
+    edgecolor=None
+)
+
+# Regression line
+sns.regplot(x=df_filtered["jittered_length"], y=df_filtered["jittered_confidence"], scatter=False, color="red", line_kws={"linewidth": 2})
+
+# Set y-axis limit between 0.65 and 1
+plt.ylim(0.65, 1)
+
+plt.xlabel("Word Length")
+plt.ylabel("OCR Confidence")
+# plt.title("Scatter Plot: OCR Confidence vs. Word Length (With Jitter & Density Coloring)")
+
+legend_labels = [
+    mpatches.Patch(color="#8b0000", label="Very High Density"),
+    mpatches.Patch(color="#ce2029", label="High Density"),
+    mpatches.Patch(color="#ff0000", label="Medium Density"),
+    mpatches.Patch(color="#f08080", label="Low Density"),
+    mpatches.Patch(color="#ffa07a", label="Very Low Density"),
+]
+
+plt.legend(handles=legend_labels, title="Density", loc="lower right")
+
 plt.show()
 ```
 
+## Effects of Writing Systems
+
+```{python}
+#| label: Q1-box
+#| fig-cap: "Box Plot: OCR Confidence vs. Japanese Character Type"
+
+# hide warnings for readability
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    
+    # --- your code ---
+    # function to find dominant character type
+    def classify_character_type(row):
+        max_ratio = max(row["hiragana_ratio"], row["katakana_ratio"], row["kanji_ratio"])
+        if max_ratio == row["kanji_ratio"]:
+            return "Kanji"
+        elif max_ratio == row["katakana_ratio"]:
+            return "Katakana"
+        else:
+            return "Hiragana"
+
+    # apply classification
+    df_filtered["char_type"] = df_filtered.apply(classify_character_type, axis=1)
+
+    # question 1 plot 2: box plot
+    plt.figure(figsize=(7.5, 5.5))
+    sns.boxplot(
+        x="char_type", 
+        y="confidence", 
+        data=df_filtered, 
+        palette="Reds",
+        whiskerprops=dict(color="black"),  # whiskers
+        capprops=dict(color="black"),  # caps
+        medianprops=dict(color="black")  # median line
+    )
+
+    plt.xlabel("Dominant Character Type")
+    plt.ylabel("OCR Confidence")
+    # plt.title("Box Plot: OCR Confidence vs. Japanese Character Type")
+
+    plt.show()
+```
+
+## Combined Insights
+
+```{python}
+#| label: Q1-heat
+#| fig-cap: "Heatmap: Correlation of Word Characteristics"
+
+# use only relevant numerical columns
+correlation_data = df_filtered[["confidence", "length", "hiragana_ratio", "katakana_ratio", "kanji_ratio"]]
+
+# correlation matrix
+corr_matrix = correlation_data.corr()
+
+# question 1 plot 3: heatmap
+plt.figure(figsize=(7, 5))
+sns.heatmap(
+    corr_matrix, 
+    annot=True,  # show correlation values
+    cmap="Reds", 
+    fmt=".2f",  # format numbers to 2 decimal places
+    linewidths=0.5,  # add lines between cells for clarity
+    vmin=-1, vmax=1  # ensure consistent color scaling
+)
+
+# tilt x axis names
+plt.xticks(rotation=45, ha="right", rotation_mode="anchor", x=0.1)
+
+# plt.title("Heatmap: Correlation of Word Characteristics")
+plt.show()
+
+```
+
+# Language Characteristics and Story Telling
+
+aaaaa
+
+## Word Frequency Snapshot
+
+```{python}
+#| label: Q2-bar1
+#| fig-cap: "Bar graph showing top 50 most frequent nouns across three Baki manga series."
+
+# list of useless words to filter out
+stopwords = {
+    "the", "a", "an", "and", "or", "but", "if", "so", "because",
+    "in", "on", "at", "to", "from", "with", "by", "about", "of",
+    "is", "are", "was", "were", "be", "being", "been", "am",
+    "have", "has", "had", "do", "does", "did", "can", "could",
+    "will", "would", "shall", "should", "must", "may", "might",
+    "this", "that", "these", "those", "there", "here", "where",
+    "when", "how", "say", "said", "tell", "told", "see", "saw",
+    "look", "looked", "come", "go", "went", "take", "took",
+    "make", "made", "get", "got", "know", "knew", "think",
+    "thought", "want", "wanted", "like", "liked", "need",
+    "needed", "use", "used", "find", "found", "give", "gave",
+    "work", "works", "working", "try", "tried", "ask", "asked",
+    "good", "bad", "better", "best", "worst", "big", "small",
+    "little", "huge", "tiny", "old", "new", "young", "great",
+    "nice", "mean", "strong", "weak", "happy", "sad",
+    "I", "me", "my", "mine", "you", "your", "yours",
+    "he", "him", "his", "she", "her", "hers", "it", "its",
+    "we", "us", "our", "ours", "they", "them", "their", "theirs",
+    "yes", "no", "maybe", "okay", "really", "very", "just", "even", "still", "yet",
+    "oh", "uh", "um", "hmm", "ah", "haha", "lol", "hmm", "what",
+    "it", "the", "not", "is", "no", "of"
+}
+
+#----------------------------------------------------------------
+
+# hide warnings for readability
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+
+    # custom red color range 
+    custom_reds = ["#ffa07a", "#ff4c4c", "#d60000", "#a00000", "#600000"]
+
+    # filter for nouns only
+    df_word_freq1 = df[df["word_POS"] == "noun"]
+
+    # remove words with spaces or numbers
+    df_word_freq1 = df_word_freq1[~df_word_freq1["word_US"].str.contains(r"\s|\d", na=False, regex=True)]
+
+    # filter out not significant words
+    df_word_freq1 = df_word_freq1[~df_word_freq1["word_US"].isin(stopwords)]
+
+    # total occurrences of words per series
+    word_counts = df_word_freq1.groupby(["img_series", "word_US"])["word_US"].count().reset_index(name="word_count")
+    # sort by frequency for each series (top 50)
+    top_n = 50
+    word_counts_top = word_counts.sort_values(by="word_count", ascending=False).groupby("img_series").head(top_n)
+
+    # get global min and max
+    global_min = word_counts_top["word_count"].min()
+    global_max = word_counts_top["word_count"].max()
+
+    # function to map word count to the custom red color range
+    def map_to_custom_reds(value, vmin, vmax):
+        norm_value = (value - vmin) / (vmax - vmin)
+        color_index = int(norm_value * (len(custom_reds) - 1))
+        return custom_reds[color_index]
+
+    # question 2 plot 1: bar graphs
+    fig, axes = plt.subplots(1, 3, figsize=(11, 11))
+
+    # loop over each series and create individual bar plots
+    for idx, series in enumerate(word_counts_top['img_series'].unique()):
+        ax = axes[idx]
+        data = word_counts_top[word_counts_top["img_series"] == series]
+
+        max_value = data["word_count"].max()
+
+        bar_colors = [map_to_custom_reds(value, global_min, global_max) for value in data["word_count"]]
+
+        bars = sns.barplot(
+            x="word_count", 
+            y="word_US", 
+            data=data, 
+            ax=ax,
+            palette=bar_colors
+        )
+
+        # black edge color of bars
+        for bar in bars.patches:
+            bar.set_edgecolor("black")
+            bar.set_linewidth(1)
+
+        # word frquency inside each bar
+        for i, value in enumerate(data["word_count"]):
+
+            text_color = "white" if series == "Baki Dou 2" and value == max_value else "black"
+            ax.text(value / 2, i, str(value), ha='center', va='center', fontsize=8, color=text_color, fontweight="bold")
+
+        # titling
+        adjusted_series = series.replace("Hanma_Baki", "Hanma Baki")
+        title = f"{adjusted_series} Series"
+        ax.set_title(title, fontweight='normal')
+
+        # y-axis
+        if idx == 0:
+            ax.set_ylabel("Word (English)", fontweight='bold')
+        if idx == 1:
+            ax.set_ylabel("Word (English)", fontweight='bold')
+        if idx == 2:
+            ax.set_ylabel("Word (English)", fontweight='bold')
+
+        # x-axis
+        if idx == 0:
+            ax.set_xlabel("Word Frequency", fontweight='bold')
+        if idx == 1:
+            ax.set_xlabel("Word Frequency", fontweight='bold')
+        if idx == 2:
+            ax.set_xlabel("Word Frequency", fontweight='bold')
+
+        # remove y-axis labels
+        if idx == 1:
+            ax.set_ylabel('')
+        if idx == 2:
+            ax.set_ylabel('')
+
+        ax.set_xlim(0, data["word_count"].max())
+
+    plt.tight_layout()
+    plt.show()
+```
+
+## Parts of Speech Distribution
+
+```{python}
+#| label: Q2-bar2
+#| fig-cap: "Bar graph of normalized distributions of POS across three Baki manga series."
+
+# filter dataset & remove nulls
+df_filtered4 = df.dropna(subset=["word_POS", "img_series"])
+
+# count occurrences of each POS per series
+pos_counts = df_filtered4.groupby(["img_series", "word_POS"])["word_POS"].count().reset_index(name="count")
+
+# pivot table for stacked bar format
+pos_pivot = pos_counts.pivot(index="img_series", columns="word_POS", values="count").fillna(0)
+
+# calculate total words in each series
+total_words_per_series = pos_pivot.sum(axis=1)
+
+# normalize each part of speech count by total words in the series
+pos_pivot_normalized = pos_pivot.div(total_words_per_series, axis=0)
+
+# create subplots
+fig, axes = plt.subplots(1, 3, figsize=(11, 11), sharey=True)
+
+# question 2 plot 2: bar graphs
+for idx, series in enumerate(pos_pivot_normalized.index):
+    ax = axes[idx]
+
+    data = pos_pivot_normalized.loc[series].sort_values(ascending=False)  # sort by proportion
+
+    data.plot(kind="bar", stacked=True, color="red", edgecolor="black", linewidth=1, ax=ax)
+
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
+
+    adjusted_series = series.replace("Hanma_Baki", "Hanma Baki")
+    ax.set_title(f"{adjusted_series} Series", fontweight="normal")
+
+    ax.set_xlabel("Parts of Speech", fontweight="bold")
+    ax.set_ylabel("Proportion", fontweight="bold")
+
+plt.tight_layout()
+plt.show()
+```
+
+## TF-IDF Insights
+
+```{python}
+#| label: Q2-bar3
+#| fig-cap: "Bar graph top 20 most important words across three Baki manga series."
+
+# hide warnings for readability
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+
+    # convert stopwords set to list
+    stopwords_list = list(stopwords)
+
+    # filter dataset & remove nulls
+    df_filtered_tfidf = df.dropna(subset=["word_US", "img_series"])
+
+    # only nouns
+    df_filtered_tfidf = df_filtered_tfidf[df_filtered_tfidf["word_POS"] == "noun"]
+
+    # remove stopwords from "word_US" column
+    df_filtered_tfidf = df_filtered_tfidf[~df_filtered_tfidf["word_US"].isin(stopwords_list)]
+
+    # put all words into a single document per series
+    series_documents = df_filtered_tfidf.groupby("img_series")["word_US"].apply(lambda x: ' '.join(x)).reset_index()
+
+    # TF-IDF vectorizer setup with custom stopwords
+    vectorizer = TfidfVectorizer(max_features=300, stop_words=stopwords_list)
+    tfidf_matrix = vectorizer.fit_transform(series_documents["word_US"])
+
+    # matrix to dataFrame
+    tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), index=series_documents["img_series"], columns=vectorizer.get_feature_names_out())
+
+    # top 20 highest TF-IDF words per series
+    top_n = 20
+    top_words_per_series = {}
+
+    for series in tfidf_df.index:
+        top_words = tfidf_df.loc[series].nlargest(top_n)
+        top_words_per_series[series] = top_words
+
+    # colors
+    cmap = plt.cm.Reds
+    norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalize between 0 and 1 for the color map
+
+    # question 2 plot 3: TF-IDF
+    fig, axes = plt.subplots(1, 3, figsize=(11, 11))
+
+    for idx, (series, words) in enumerate(top_words_per_series.items()):
+        ax = axes[idx]
+        
+        # normalize TF-IDF values for each word to create color gradient
+        normalized_values = (words.values - words.values.min()) / (words.values.max() - words.values.min())
+        colors = [cmap(norm(val)) for val in normalized_values]
+        
+        sns.barplot(x=words.values, y=words.index, ax=ax, palette=colors, edgecolor="black")
+        ax.set_title(f"{series} Series")
+        ax.set_xlabel("TF-IDF Score")
+        ax.set_ylabel("Word (English)")
+
+        # x-axis label
+        if idx == 1:
+            ax.set_xlabel("TF-IDF Score", fontweight="bold")
+
+        # y-axis label
+        if idx == 0:
+            ax.set_ylabel("Word (English)", fontweight="bold")
+
+        # remove x-axis
+        # if idx == 0:
+            # ax.set_xlabel('')
+        # if idx == 2:
+            # ax.set_xlabel('')
+
+        # remove y-axis labels
+        if idx == 1:
+            ax.set_ylabel('')
+        if idx == 2:
+            ax.set_ylabel('')
+
+        # set x-axis ticks to intervals of 0.15
+        ax.set_xticks([i * 0.15 for i in range(int(words.values.max() // 0.15) + 1)])
+
+    plt.tight_layout()
+    plt.show()
+```
+
+# Thematic Overview
+
+aaaaa
+
+```{python}
+#| label: Q3-bar
+#| fig-cap: "Bar graph showing distribution of themes across three Baki manga series."
+
+# stopwords into list
+stopwords_list = list(stopwords)
+
+# filter data
+df_filtered_tfidf = df.dropna(subset=["word_US", "img_series"])
+df_filtered_tfidf = df_filtered_tfidf[df_filtered_tfidf["word_POS"] == "noun"]
+df_filtered_tfidf = df_filtered_tfidf[~df_filtered_tfidf["word_US"].isin(stopwords_list)]
+
+# create documents per series
+series_documents = df_filtered_tfidf.groupby("img_series")["word_US"].apply(lambda x: ' '.join(x)).reset_index()
+
+# more TF-IDF (used by NMF)
+vectorizer = TfidfVectorizer(
+    max_features=200,         # fewer features = less noise
+    min_df=2,                 # only keep words that appear in at least 2 docs
+    stop_words=stopwords_list
+)
+tfidf_matrix = vectorizer.fit_transform(series_documents["word_US"])
+
+# NMF code
+n_topics = 3
+nmf_model = NMF(n_components=n_topics, random_state=42, max_iter=600)
+nmf_features = nmf_model.fit_transform(tfidf_matrix)
+
+# top words per topic
+n_top_words = 30
+feature_names = vectorizer.get_feature_names_out()
+
+topic_words = {}
+for topic_idx, topic in enumerate(nmf_model.components_):
+    top_indices = topic.argsort()[:-n_top_words - 1:-1]
+    top_words = [feature_names[i] for i in top_indices]
+    topic_words[f"Topic {topic_idx}"] = top_words
+
+# for topic, words in topic_words.items():
+    # print(f"{topic}: {', '.join(words)}\n")
+
+#----------------------------------------------------------------
+
+# hide warnings for readability
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+
+    # topic labels
+    topic_labels = {
+        0: "Strength & Identity",
+        1: "Philosophy & Humanity",
+        2: "Violence & Progression"
+    }
+
+    # NMF output into a df 
+    nmf_df = pd.DataFrame(nmf_features, index=series_documents["img_series"])
+    nmf_df.columns = [topic_labels[i] for i in nmf_df.columns]
+
+    # normalize
+    nmf_df_norm = nmf_df.div(nmf_df.sum(axis=1), axis=0)
+
+    # custom colors
+    custom_colors = {
+        "Strength & Identity": "#ff0000",
+        "Philosophy & Humanity": "#be4f62",
+        "Violence & Progression": "#8b0000"
+    }
+    color_list = [custom_colors[col] for col in nmf_df_norm.columns]
+
+    # question 3 plot 1: NMF - Non-Negative Matrix Factorization
+    nmf_df_norm.plot(
+        kind='bar',
+        stacked=True,
+        figsize=(6.5, 4.5),
+        color=color_list
+    )
+
+    # plt.title("Thematic Distribution per Baki Series")
+    plt.ylabel("Proportion of Theme")
+    plt.xlabel("Series")
+    plt.legend(title="Theme", bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.show()
+```
+
+# Conclusion
+
+aaaaa
+
 Here's an example of citing a source [see @phil99, pp. 33-35]. Be sure the source information is entered in "BibTeX" form in the `references.bib` file.
-
-
-The bibliography will automatically be generated, listing all sources in the `.bib` file.
