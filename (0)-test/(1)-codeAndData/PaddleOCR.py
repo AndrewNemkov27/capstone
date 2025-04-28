@@ -96,13 +96,13 @@ ocr = PaddleOCR(
     lang="japan",
     rec_algorithm="SVTR_LCNet",
     use_angle_cls=True,
-    rec_batch_num=50,
+    rec_batch_num=50,  # batch size processing - increases speed of processing
     rec_char_type="jp",
-    det_db_box_thresh=0.3,
-    det_db_unclip_ratio=2,
+    det_db_box_thresh=0.3,  # box detection confidence - increase only captures clear to see text boxes
+    det_db_unclip_ratio=2,  # expand detected text boxes - increases detection boxes for more words
     use_mp=True,
-    rec_max_len=30,
-    drop_score=0.65,
+    rec_max_len=30,  # maximum length of extracted phrase - increases size of extracted phrase
+    drop_score=0.65,  # limit to confidence score - increases to give only higher confidence phrases
     use_dilation=True
 )
 

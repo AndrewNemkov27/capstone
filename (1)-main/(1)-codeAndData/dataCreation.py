@@ -95,19 +95,21 @@ ocr = PaddleOCR(
     lang="japan",
     rec_algorithm="SVTR_LCNet",
     use_angle_cls=True,
-    rec_batch_num=10,
+    rec_batch_num=10,  # batch size processing - increases speed of processing
     rec_char_type="jp",
-    det_db_box_thresh=0.3,
-    det_db_unclip_ratio=2,
+    det_db_box_thresh=0.3,  # box detection confidence - increase only captures clear to see text boxes
+    det_db_unclip_ratio=2,  # expand detected text boxes - increases detection boxes for more words
     use_mp=True,
-    rec_max_len=30,
-    drop_score=0.65,
+    rec_max_len=30,  # maximum length of extracted phrase - increases size of extracted phrase
+    drop_score=0.65,  # limit to confidence score - increases to give only higher confidence phrases
     use_dilation=True
 )
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-image_folder = os.path.join(script_dir, "rawData", "Baki3Rahen")
-csv_file = os.path.join(script_dir, "realData.csv")
+code_dir = os.path.dirname(os.path.abspath(__file__))
+image_dir = os.path.dirname(code_dir)
+
+image_folder = os.path.join(image_dir, "(0)-rawData", "Baki3Rahen")
+csv_file = os.path.join(code_dir, "realData.csv")
 
 img_series = "Baki Rahen"
 

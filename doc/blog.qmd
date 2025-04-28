@@ -55,18 +55,59 @@ For a for detailed explanation on the process of using this machine learning, pl
 2. **Documentation:** @documentation_OCR_2025
 3. **Tutorial Video:** @tutorial_OCR_2021
 
+**Japanese Overview**
+
+    writing system breakdown
+
 ## Dataset Creation
 
-Setup
+**Setup**
 
-Parameters
+    imports
+    fugashi
+    POS
+    cleaning text
+    google translate
+    tokenize into words
+    character ratios
+    changing series folder and name
 
-Model Choice
+    remake headers
+    skipping file
+    grayscaling and denoising
+    free memory
 
-Implementation
+**Parameters**
 
-Time and Tracking Issues 
+    batch size
+    box detection confidence
+    box detection size
+    maximum length
+    max confidence score
+
+**Model Choice**
+
+    language of files
+    ease of implementation
+
+**Features**
+
+    word_JAP
+    word_US
+    word_POS
+    phrase_JAP
+    img_title
+    img_series
+    length
+    confidence
+    word_freq
+    hiragana_ratio
+    katakana_ratio
+    kanji_ratio
+
 ![Result snippet of OCR code test run.](blog_assets/Implementation.png){fig-alt="Image showing test run of PaddleOCR code on image named DL-Raw.Net_111 (2).jpg."}
+
+The above image shows the python output in the Visual Studio Code application of the test PaddleOCR code being run on the image titled DL-Raw.Net_111 (2).jpg. As you can see, the OCR model outputs each phrase it extracts with its elapsed time, and in addition after the entire image was processed, the code outputs a success message with a counter to keep track of the total number of images processed by the model.
 
 # Dataset Preprocessing 
 
@@ -100,15 +141,25 @@ df_filtered = df[df["length"] <= 10].copy()
 # print(df_filtered.head())
 ``` 
 
+After successfully choosing an OCR model, setting it up, and adjusting its parameters, I began my word analysis of my completed dataset by importing the necessary python libraries. 
+
+Some important ones to mention are:
+
+1. The **gaussian_kde** to help calculate jittering in scatter plot points.
+2. The **TfidfVectorizer** to properly perform a TF-IDf analysis.
+3. The **NMF** to separate large word collections into themes by meaning.
+
+In addition to the standard method of reading in a CSV dataset, I also filtered the data to exclude words longer than 10 characters, as this was clearly an tokenization error. This means some words were not tokenized correctly and therefore proper word analysis could not be performed on them. For this reason, I cleaned the data to include only single word entries.
+
 # OCR Confidence and Word Complexity
 
-aaaaa
+The first part of my analysis involved researching the correlations between an OCR model's confidence and an extracted word's complexity. In this case complexity considers both the length of the extracted and tokenized Japanese word as well as the types of Japanese characters that make up this word. Separate analysis of these two simpler relationships can yield significant understanding of what variables most notably decrease an OCR model's confidence score for a extracted phrase, allowing for better future application of the project.
 
 ## Word Length Trends
 
 ```{python}
 #| label: Q1-scatter
-#| fig-cap: "Scatter Plot: OCR Confidence vs. Word Length"
+#| fig-cap: "Figure 1.1: Scatter plot showing relationship between OCR confidence and word length."
 
 # filter words with more than 15 characters
 long_words = df[df["word_JAP"].str.len() > 15][["word_JAP", "word_US"]]
@@ -175,17 +226,22 @@ plt.legend(handles=legend_labels, title="Density", loc="lower right")
 plt.show()
 ```
 
+Analysis of the relationship between OCR confidence and word complexity begins by understanding the relationship between confidence and word length. I originally speculated that longer words are inherently more complex, therefore it would be more difficult for the model to extract them. 
+
+To test this theory I wrote a scatter plot depicting the correlation between word length and OCR confidence. The original result was poorly visualized, so I implemented jittering of the scatterplot points for minimum variety of spacing, as well as added custom labels for five levels of density of points ranging from "Very High Density" to "Very Low Density". These labels were used to color the points in the graph, with darker red representing higher density and lighter red representing lower density. One final addition to the graphic was the use of a line-of-best-fit to help point the relationship between the two variables.
+
+The results of these adjustments are seen above in figure 1.1, where the features of word length and OCR confidence is positive (unlike my original guess of the relationship being negative). This means that as a Japanese word's length increases, the chance of it being extracted from a Japanese phrase with higher OCR confidence increases. This result may be explained by the nature of how Japanese words are written, as words written with more complicated characters tend to often be shorter than those written with simpler characters.
+
 ## Effects of Writing Systems
 
 ```{python}
 #| label: Q1-box
-#| fig-cap: "Box Plot: OCR Confidence vs. Japanese Character Type"
+#| fig-cap: "Figure 1.2: Box plot showing relationship between OCR confidence and Japanese writing systems."
 
 # hide warnings for readability
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     
-    # --- your code ---
     # function to find dominant character type
     def classify_character_type(row):
         max_ratio = max(row["hiragana_ratio"], row["katakana_ratio"], row["kanji_ratio"])
@@ -218,11 +274,13 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
+The above visualization of figure 1.2 shows a box plot that visualizes the relationship between OCR confidence and the three types of Japanese writing systems. It is clear that confidence for hiragana dominant Japanese words is higher than for those words who are dominated by kanji and katakana characters. This result explains that more complicated letters such as katakana and kanji are more difficult for the OCR model to process and extract compared to simpler hiragana letters.
+
 ## Combined Insights
 
 ```{python}
 #| label: Q1-heat
-#| fig-cap: "Heatmap: Correlation of Word Characteristics"
+#| fig-cap: "Figure 1.3: Heatmap showing correlation of word characteristics."
 
 # use only relevant numerical columns
 correlation_data = df_filtered[["confidence", "length", "hiragana_ratio", "katakana_ratio", "kanji_ratio"]]
@@ -249,6 +307,8 @@ plt.show()
 
 ```
 
+The figure 1.3 above is a heatmap that summarizes the findings of the previous two visualizations (figure 1.1 and figure 1.2). It shows the relationships between the features of OCR confidence, word length, the ratio of hiragana in a Japanese word, the ratio of katakana in a Japanese word, and the ratio of kanji in a Japanese word. From the graph, it is clear that an OCR model's confidence score correlates positively with word length and hiragana ratio, meaning that as a word's length increases and/or hiragana ratio increases, then the confidence by which it was extracted with also increases. On the other hand, an OCR model's confidence score correlates negatively with katakana ratio and kanji ratio of Japanese words, meaning that as the katakana ratio and/or kanji ratio of characters in a Japanese word increases, then the confidence by which this word was extracted by the model decreases.
+
 # Language Characteristics and Story Telling
 
 aaaaa
@@ -257,7 +317,7 @@ aaaaa
 
 ```{python}
 #| label: Q2-bar1
-#| fig-cap: "Bar graph showing top 50 most frequent nouns across three Baki manga series."
+#| fig-cap: "Figure 2.1: Bar graph showing top 50 most frequent nouns across three Baki manga series."
 
 # list of useless words to filter out
 stopwords = {
@@ -382,11 +442,15 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
+aaaaa
+
+aaaaa
+
 ## Parts of Speech Distribution
 
 ```{python}
 #| label: Q2-bar2
-#| fig-cap: "Bar graph of normalized distributions of POS across three Baki manga series."
+#| fig-cap: "Figure 2.2: Bar graph of normalized distributions of POS across three Baki manga series."
 
 # filter dataset & remove nulls
 df_filtered4 = df.dropna(subset=["word_POS", "img_series"])
@@ -426,11 +490,13 @@ plt.tight_layout()
 plt.show()
 ```
 
+aaaaa
+
 ## TF-IDF Insights
 
 ```{python}
 #| label: Q2-bar3
-#| fig-cap: "Bar graph top 20 most important words across three Baki manga series."
+#| fig-cap: "Figure 2.3: Bar graph top 20 most important words across three Baki manga series."
 
 # hide warnings for readability
 with warnings.catch_warnings():
@@ -512,13 +578,15 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
+aaaaa
+
 # Thematic Overview
 
 aaaaa
 
 ```{python}
 #| label: Q3-bar
-#| fig-cap: "Bar graph showing distribution of themes across three Baki manga series."
+#| fig-cap: "Figure 3: Bar graph showing distribution of themes across three Baki manga series."
 
 # stopwords into list
 stopwords_list = list(stopwords)
@@ -601,8 +669,10 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
-# Conclusion
+aaaaa
 
 aaaaa
 
-Here's an example of citing a source [see @phil99, pp. 33-35]. Be sure the source information is entered in "BibTeX" form in the `references.bib` file.
+# Conclusion
+
+aaaaa
