@@ -34,7 +34,7 @@ Utilizing data science techniques, I aim bridge this gap in linguistics by analy
 
 # Dataset Foundation
 
-To undertake such a difficult task of bridging the gap between my English and the Japanese of Grappler Baki, I first needed to create a proper dataset that would contains all the written content used to describe Baki's story over a large assortment of Japanese manga panels. For this, I discovered a site known as dl-raw.ac that contained downloadable content on various Japanese manga, broken down by series. In this site, I downloaded pages for the three Baki series of my personal choice: Baki Rahen manga series (see @baki_rahen_2025), Baki Dou 2 manga series (see @baki_douTwo_2025), and Hanma Baki manga series (see @hanma_baki_2025). In total, the three downloads contained roughly 4000 Japanese manga pages describing various parts of Baki's life as a fighter.
+To undertake such a difficult task of bridging the gap between my English and the Japanese of Grappler Baki, I first needed to create a proper dataset that would contains all the written content used to describe Baki's story over a large assortment of Japanese manga panels. For this, I discovered a site known as [dl-raw.ac](https://dl-raw.ac/) that contained downloadable content on various Japanese manga, broken down by series. In this site, I downloaded pages for the three Baki series of my personal choice: Baki Rahen manga series (see [Baki Rahen Page](https://dl-raw.ac/%e5%88%83%e7%89%99%e3%82%89%e3%81%b8%e3%82%93-raw/)), Baki Dou 2 manga series (see [Baki Dou 2 Page](https://dl-raw.ac/%e5%88%83%e7%89%99%e9%81%93-%e7%ac%ac01-20%e5%b7%bb-baki-dou-vol-01-20/)), and Hanma Baki manga series (see [Hanma Baki Page](https://dl-raw.ac/%e7%af%84%e9%a6%ac%e5%88%83%e7%89%99-hanma-baki/)). In total, the three downloads contained roughly 4000 Japanese manga pages describing various parts of Baki's life as a fighter.
 
 ::: {.callout-note}
 ## Validity of dl-raw.ac Website
@@ -47,13 +47,13 @@ Some things to note about the website I utilized to get my data:
 4. The data used in this project will not be redistributed.
 :::
 
-After gathering the source of my data, I needed a tool that I could use to extract the Japanese text from these images and turn the result into a computer-readable format. For this i utilized Optical Character Recognition (OCR), which would take in a Japanese manga image as input and output extracted Japanese phrases with each having a confidence score for extraction. 
+After gathering the source of my data, I needed a tool that I could use to extract the Japanese text from these images and turn the result into a computer-readable format. For this I utilized Optical Character Recognition (OCR), which would take in a Japanese manga image as input and output extracted Japanese phrases with each having a confidence score for extraction. 
 
-For a for detailed explanation on the process of using this machine learning, please see below: 
+For a detailed explanation on the process of using this machine learning, please see below: 
 
-1. **Basic Overview:** @geeks_OCR_2023 and @IBM_OCR_2024
-2. **Documentation:** @documentation_OCR_2025
-3. **Tutorial Video:** @tutorial_OCR_2021
+1. [GeekForGeeks site OCR explanation](https://www.geeksforgeeks.org/what-is-optical-character-recognition-ocr/) and [IBM site OCR explanation](https://www.ibm.com/think/topics/optical-character-recognition)
+2. [Documentation of PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/main/README_en.md)
+3. [Tutorial Video for PaddleOCR](https://www.youtube.com/watch?v=t5xwQguk9XU)
 
 **Japanese Overview**
 
@@ -105,13 +105,34 @@ For a for detailed explanation on the process of using this machine learning, pl
     katakana_ratio
     kanji_ratio
 
-![Result snippet of OCR code test run.](blog_assets/Implementation.png){fig-alt="Image showing test run of PaddleOCR code on image named DL-Raw.Net_111 (2).jpg."}
+# Example Extraction
 
-The above image shows the python output in the Visual Studio Code application of the test PaddleOCR code being run on the image titled DL-Raw.Net_111 (2).jpg. As you can see, the OCR model outputs each phrase it extracts with its elapsed time, and in addition after the entire image was processed, the code outputs a success message with a counter to keep track of the total number of images processed by the model.
+Below is a short demonstration of the process of the PaddleOCR model I utilized in my project as it is given an image and it identifies and extracts Japanese text from a Baki manga panel. Later proper cleaning and calculations are performed with these extracted phrases as all the collected information is recorded in the dataset.
+
+**Step 1: Obtain Image**
+
+![Test image OCR identification.](blog_assets/Implementation1.png){fig-alt="Image showing PaddleOCR identifying text in DL-Raw.Net_48 (2).jpg image."}
+
+The process begins with an image input. In this example, I used a simple image with few words for simplicity called DL-Raw.Net_48 (2).jpg. The OCR model runs its machine learning algorithm and identifies the text seen in the bright red box.
+
+**Step 2: Extract Text**
+
+![Test image python OCR output.](blog_assets/Implementation2.png){fig-alt="Image showing test run of PaddleOCR code on image named DL-Raw.Net_48 (2).jpg."}
+
+The process continues as this phrase is formatted to be computer readable and the model continues to see if it can identify any more text. When the model can no longer read any more information from the image, a numered success message is given in the output above.
+
+**Step 3: Add to Dataset**
+
+![Test image dataset implementation.](blog_assets/Implementation3.png){fig-alt="Image showing extracted information and calculated features obtained by running PaddleOCR on image named DL-Raw.Net_48 (2).jpg."}
+
+The identified information of the DL-Raw.Net_48 (2).jpg image are input into the test dataset and many steps of data preperation are calculated and obtained from the extracted phrase(s).
 
 # Dataset Preprocessing 
 
 ```{python}
+#| label: First-5-Rows
+#| fig-cap: "Figure 0.5: First five rows of dataset."
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -127,6 +148,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
 
 import warnings
+from IPython.display import display
 
 #----------------------------------------------------------------
 
@@ -138,7 +160,7 @@ df = pd.read_csv(csv_file)
 # remove outliers (words longer than 10 characters)
 df_filtered = df[df["length"] <= 10].copy()
 
-# print(df_filtered.head())
+display(df_filtered.head())
 ``` 
 
 After successfully choosing an OCR model, setting it up, and adjusting its parameters, I began my word analysis of my completed dataset by importing the necessary python libraries. 
@@ -311,7 +333,7 @@ The figure 1.3 above is a heatmap that summarizes the findings of the previous t
 
 # Language Characteristics and Story Telling
 
-aaaaa
+To better understand the use of language in Grappler Baki, I continued my analysis by not just the physical but also grammatical and linguistic characteristics of words in the manga work. To simplify I performed analysis to see what information I can find regarding the frequency of used words, parts of speech, and in general the importance of word usage. This side of my project also delves more into understanding the themes present in Grappler Baki.
 
 ## Word Frequency Snapshot
 
@@ -442,9 +464,17 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
-aaaaa
+To better understand the impact of themes on the story of Baki, I decided to visualize the most common nouns present across all three manga series in the form of a three side-by-side bar graphs. I began by cleaning my dataset to get a fair result of my visualization. The three main things I did are shown below:
 
-aaaaa
+**Stopword Removal:**
+- I removed the dataset of "stopwords". An example of a common stopword is "the" or "be". They are called this because they "stop" or are excluded in almost all natural language processing. They provide no significant meaning and appear very frequently, potentially swaying the results of word analysis if they are not filtered out. In the beginning of the code section above you can see a large list of common stopwords I excluded from my dataset for this graph.
+
+**Additional Cleaning:**
+I continued by filtering my dataframe of this graph to only include words marked as nouns, since these will provide me with the most amount of context and meaninful information to understand the themes of Grappler Baki. I also removed words with spacing or numbers, as these can cause issues for proper visualization understanding.
+
+After performing the above cleaning, I put together my combined bar graphic of figure 2.1 above showning the 50 most common nouns in each manga series of Baki Dou 2, Baki Rahen, and Hanma Baki (graphs follow same order of left to right). For easier readability, the graphs were all colored by a set of 5 red colors, with darker red representing more frequency of a word and lighter red representing less frequency of a word.
+
+The results of this graph are really interesting in that the word "Baki", the name of the main character in *Grappler Baki*, is one of the most often occuring nouns in all three series. In addition, words such as "Sumo", "body", "fighting", "strongest", "warrior", "death", "man" all clearly represent the themes on which the story of Grappler Baki stands upon. This relationship between noun frequency and thematic representation portrays the Japanese manga as one that is character-centric, as in the story would not look the same with totally different characters.
 
 ## Parts of Speech Distribution
 
@@ -490,7 +520,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-aaaaa
+I continued my thematic analysis of Baki by visualizing another bar graph of figure 2.2. This one differs from figure 2.1 in that it visulizes the normalized distribution of parts of speech across the three Baki series used in my dataset. When I say normalized, I mean that adjusted to take into consideration of the proportion of parts of speech across series instead of just total number of occurrences.
+
+The result of the above figure surprised me greatly, as the distribution of parts of speech across the series is nearly identical, with nouns, unknown, and verbs dominating the total proportion. This means that since 2005 (the year when the series of Hanma Baki began) till today's year of 2025, the way that *Grappler Baki* is written has not changed. This means that the author still works and desires to expand on the story of Baki, following the same narrative style and word usage. This also means that the themes of Baki have not changed over the past 20 years
 
 ## TF-IDF Insights
 
@@ -578,7 +610,9 @@ with warnings.catch_warnings():
     plt.show()
 ```
 
-aaaaa
+The final visualization of figure 2.3 shows a the results of TF-IDF analysis on the dataset in a combined bar graph format. The term TF-IDF written out fully reads as term frequency-inverse document frequency and this is a technique in data analysis to measure the importance of words in a given document. During this process, a certain weight is applied to each word in a given dataset, meaning "heavier" words hold more meaning while "lighter" words hold less meaning. Weight of a word decreases by how frequently it appears in the overall word list. In general TF-IDF highlights words that are distinctive rather than common.
+
+In the above visualization of the top 20 most important words in each Baki series is colored with a red hue. The graph clearly shows a similarity to the result in figure 2.1 of the most common nouns in all three Baki manga series. Names and words relating to the themes of the Grappler Baki story are shown, representing that characters are central to the story of Baki.
 
 # Thematic Overview
 
