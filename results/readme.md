@@ -5,7 +5,9 @@ The culmination of this work can be found in the attatched blog post in the doc 
 https://andrewnemkov27.github.io/capstone/doc/blog.html
 
 For easier file management, my entire project contains a (0)-test file, a (1)-main file, a doc file, a result file, and a README.md file. 
+
 1. The **(0)-test** file contains all information I performed on testing such as examples, test images, test code python files, and the test CSV dataset.
+
 2. The **(1)-main** file contains the 4000 manga series in (0)-rawData broken down into three sections by specific manga series, the dataset creation and frequency calculation python files, the Jupyter notebook file containing all analysis performed on the dataset, and the actual project CSV dataset.
 
 Most of the visualization of the project are also contained in the final blog post. Considering this, I chose to not include the below code in the final results, the reason as to which I explain further:
