@@ -4,6 +4,10 @@ The culmination of this work can be found in the attatched blog post in the doc 
 
 https://andrewnemkov27.github.io/capstone/doc/blog.html
 
+For easier file management, my entire project contains a (0)-test file, a (1)-main file, a doc file, a result file, and a README.md file. 
+1. The **(0)-test** file contains all information I performed on testing such as examples, test images, test code python files, and the test CSV dataset.
+2. The **(1)-main** file contains the 4000 manga series in (0)-rawData broken down into three sections by specific manga series, the dataset creation and frequency calculation python files, the Jupyter notebook file containing all analysis performed on the dataset, and the actual project CSV dataset.
+
 Most of the visualization of the project are also contained in the final blog post. Considering this, I chose to not include the below code in the final results, the reason as to which I explain further:
 
 1. OCR Confidence vs Word Length Scatter Plot (not cleaned):
@@ -18,5 +22,9 @@ Most of the visualization of the project are also contained in the final blog po
 - capstone/(1)-main/(1)-codeAndData/dataFreq.py
 
 4. Testing Code:
-One final thing to note regarding exclusion of code is that the testing code for the OCR model is also not shown in the final blog post. Even though this process is relatively short to run (around 5 minutes total) it is still time-consuming. Since this project's main goal was on analysis rather than testing, it would not make sense to extensively overview it in the blog. I have kept all of my this code of test images, test dataset, and test code in the folders found in the below section of the project below.
+It is also important to note that the testing code for the OCR model is also not shown in the final blog post. Even though this process is relatively short to run (around 5 minutes total) it is still time-consuming. Since this project's main goal was on analysis rather than testing, it would not make sense to extensively overview it in the blog. I have kept all of my this code of test images, test dataset, and test code in the folders found in the below section of the project below.
 - capstone/(0)-test
+
+5. Thematic NMF Word Grouping:
+- The final not shown visualization is the NMF thematic combined bar graph at the end of the analysis. Originally, I wanted to take all my words in each manga series and group the words into topics. The code does this properly, but did not group by specific topic, as in the code result doesnt not signify what each group means. This lack of specific topic information makes the result difficult to interpret. Even if i manually looked at all the words in each topic, it would be extremenly hard to find a single word topic description for each group. Therefore to not raise confusion and bias in my analysis, I am choosing to exclude it from my work. The chart can be found at the bottom of the file with the path of this file below.
+- capstone/(1)-main/(1)-codeAndData/questions123.ipynb

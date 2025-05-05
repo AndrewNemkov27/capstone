@@ -2,6 +2,8 @@ from manga_ocr import MangaOcr
 import fugashi
 import os
 
+# Note: This is test code, please do not grade it as it has nothing to do with the results of the project.
+
 # Function to clean up OCR text using fugashi tokenizer
 def clean_japanese_text(text):
     tagger = fugashi.Tagger()

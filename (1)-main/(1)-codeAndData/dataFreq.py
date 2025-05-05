@@ -2,6 +2,8 @@ import os
 import csv
 from collections import Counter
 
+# Note: this code is not included in project blog post.
+
 # locate the CSV file
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_filename = os.path.join(script_dir, "realData.csv")

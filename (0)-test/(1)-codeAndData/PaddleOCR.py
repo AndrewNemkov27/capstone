@@ -7,6 +7,8 @@ from collections import Counter
 from paddleocr import PaddleOCR
 from googletrans import Translator
 
+# Note: this code is not included in project blog post.
+
 # Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
 

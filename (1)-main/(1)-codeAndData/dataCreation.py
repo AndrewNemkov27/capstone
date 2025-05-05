@@ -13,6 +13,8 @@ from googletrans import Translator
 # https://jp-seemore.com/iot/python/10692/#google_vignette, where its code
 # chunks helped to provide a foundation from which to work with.
 
+# Note: this code is not included in project blog post.
+
 # Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
 
