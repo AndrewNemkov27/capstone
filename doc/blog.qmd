@@ -63,7 +63,7 @@ Further context is required to better understand the results of my project. In t
 
 **Setup**
 
-To begin an exaplanation of the OCR code used in this project, it is essential to start with the correct python libraries. Almost all were utilized in the data preparation process. Specifically, I used **cv2** for file reading and image preprocessing, **re** for cleaning of words, csv to read my extraction into a dataset, **os** for file path creation, **gc** for cleaning memory, **fugashi** to separate phrases into words, **Counter** to count word frequency, **PaddleOCR** to import the proper OCR model, and **Translator** to translate extracted Japanese words to English.
+To begin an exaplanation of the OCR code used in this project, it is essential to start with the correct python libraries. Almost all were utilized in the data preparation process. Specifically, I used the **cv2** python library for file reading and image preprocessing, the **re** python library for cleaning of words, csv to read my extraction into a dataset, **os** for file path creation, the **gc** python library for cleaning memory, the **fugashi** python library to separate phrases into words, the **Counter** python library to count word frequency, the **PaddleOCR** python library to import the proper OCR model, and the **Translator** python library to translate extracted Japanese words to English.
 
 The data creation process continued with utilizing the above libraries to create a meaninful dataset for analysis. I used figashi to tokenize words as well as identify each word's part of speech and in addition to this, those words that were not identified into groups were set as "unknown". I continued by translating my Japanese words into English using Google translate as well as calculating the Japanese ratios of types of characters in each word. Each word was given three ratios for the proportion of hiragana, katakana, and kanji characters in each word.
 
@@ -76,7 +76,7 @@ In addition, to limit performance issues of the Visual Studio Code application a
 
 :::
 
-**Parameters**
+**Parameter Tuning**
 
 The parameters of the OCR model for this project are just as important as creating the columns of the dataset. Finding the right parameters to use took lots of experimentation, as I kept slightly adjusting the OCR's rec_batch_num, det_db_box_thresh, det_db_unclip_ratio, rec_max_len, and drop_score. Below I explained these parameters further below:
 
@@ -109,7 +109,9 @@ Below is a short demonstration of the process of the PaddleOCR model I utilized 
 
 **Step 1: Obtain Image**
 
-![Test image OCR identification.](blog_assets/Implementation1.png){fig-alt="Image showing PaddleOCR identifying text in DL-Raw.Net_48 (2).jpg image."}
+Below is an example of one of 4000 Japanese manga panels from the Grappler Baki manga. In this specific case, the image comes at the end of a chapter, which is why the right half is black while the left shows drawings and text.
+
+![Example Japanese manga panel named DL-Raw.Net_48 (2).jpg.](blog_assets/Implementation1.png){fig-alt="Image showing PaddleOCR identifying text in DL-Raw.Net_48 (2).jpg image."}
 
 The process begins with an image input. In this example, I used a image with few words for simplicity titled DL-Raw.Net_48 (2).jpg. The OCR model runs its machine learning algorithm and identifies the Japanese text seen in the bright red box above.
 
@@ -119,13 +121,15 @@ The process begins with an image input. In this example, I used a image with few
 
 The model takes the identified text and formats it into a computer readable format. After this, the OCR continues to attempt to identify any more text phrases, following the repreating process of identification and transformation in format until no more text can be identified on the image. When this occurs, a numered success message is given in the output, showing the ending of OCR process on the DL-Raw.Net_48 (2).jpg image.
 
+
+
 **Step 3: Add to Dataset**
 
 ![Test image dataset implementation.](blog_assets/Implementation3.png){fig-alt="Image showing extracted information and calculated features obtained by running PaddleOCR on image named DL-Raw.Net_48 (2).jpg."}
 
 The identified information of the example image is the actual extracted phrase and the model's confidence of this extraction. These two key pieces are input into a dataset. Following this, my own code performs several steps of further calculations from both the information about the image and the Japanese text that was extracted. 
 
-The result of my calculations and further data preparation is seen above with a small dataset including headers and two words obtained from one phrase of extracted text from the above example image. 
+The result of my calculations and further data preparation is seen above with a small dataset including headers, the extraced Japanese phrase of 他の監, and two words of 他 and 監 which were obtained from this phrase from the above example image. It is important to note that the symbol の is read as "no" and serves a grammatical phrase of the role, explaining why there are two words and not three in the example dataset. 
 
 # Dataset Preprocessing 
 
@@ -167,9 +171,9 @@ After successfully choosing an OCR model, performing the necessary setup, and ad
 
 Some important ones I mentioned below:
 
-1. The **gaussian_kde** library to help calculate jittering in scatter plot points.
-2. The **TfidfVectorizer** library to perform a TF-IDf analysis to obtain importance of words in a dataset.
-3. The **NMF** library to perform NMF analysis to group words into distinct themes.
+1. I calculate jittering in scatter plot points using the the **gaussian_kde** library.
+2. I perform a TF-IDf analysis to obtain importance of words in a dataset using the **TfidfVectorizer** library.
+3. I perform NMF analysis to group words into distinct themes using the **NMF** library.
 
 In addition to the standard method of reading in a CSV dataset, I also filtered the data to exclude words longer than 10 characters, as this was clearly an tokenization error. This means some words were not correctly split from their parent phrases and therefore proper word analysis can't be performed on them. As a result, I cleaned the data to include only single word entries for the main word_JAP column.
 
@@ -254,7 +258,7 @@ To test this theory I wrote a scatter plot depicting the correlation between wor
 
 The results of these adjustments are seen above in figure 1.1, where the features of word length and OCR confidence is positive (unlike my original guess of the relationship being negative). This means that as a Japanese word's length increases, the chance of it being extracted with higher OCR confidence increases. This result may be explained by the nature of how Japanese words are written, as words written with more complicated characters tend to often be shorter than those written with simpler characters.
 
-## Effects of Writing Systems
+## OCR Confidence by Character Type
 
 ```{python}
 #| label: Q1-box

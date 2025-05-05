@@ -8,6 +8,11 @@ from collections import Counter
 from paddleocr import PaddleOCR
 from googletrans import Translator
 
+# inspiration from the code came from many different sources, but one that I
+# saved was on the Japanese site
+# https://jp-seemore.com/iot/python/10692/#google_vignette, where its code
+# chunks helped to provide a foundation from which to work with.
+
 # Initialize the fugashi tokenizer
 tagger = fugashi.Tagger()
 
